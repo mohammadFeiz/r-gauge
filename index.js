@@ -58,7 +58,7 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(RGauge).call(this, props));
     _this.maxHeight = 0;
 
-    _this.setStaticValues();
+    _this.setStatics();
 
     var _this$props = _this.props,
         range = _this$props.range,
@@ -67,7 +67,8 @@ function (_Component) {
         pin = _this$props.pin,
         label = _this$props.label,
         ranges = _this$props.ranges,
-        animate = _this$props.animate;
+        animate = _this$props.animate,
+        style = _this$props.style;
     pointer = JSON.parse(JSON.stringify(pointer));
     _this.state = {
       pointer: animate ? pointer.map(function (p) {
@@ -77,19 +78,47 @@ function (_Component) {
       prevPin: JSON.stringify(pin),
       prevLabel: JSON.stringify(label),
       prevRanges: JSON.stringify(ranges),
+      prevStyle: JSON.stringify(style),
       getValue: _this.getValue.bind(_assertThisInitialized(_this)),
       animate: _this.animate.bind(_assertThisInitialized(_this)),
       setStatics: _this.setStatics.bind(_assertThisInitialized(_this))
     };
-
-    _this.setStatics();
-
     return _this;
   }
 
   _createClass(RGauge, [{
     key: "setStatics",
     value: function setStatics() {
+      var style = this.props.style;
+      var _style$padding = style.padding,
+          padding = _style$padding === void 0 ? 0 : _style$padding,
+          _style$angle = style.angle,
+          angle = _style$angle === void 0 ? 180 : _style$angle,
+          _style$radius = style.radius,
+          radius = _style$radius === void 0 ? 100 : _style$radius,
+          _style$direction = style.direction,
+          direction = _style$direction === void 0 ? 'clockwise' : _style$direction,
+          _style$thickness = style.thickness,
+          thickness = _style$thickness === void 0 ? 10 : _style$thickness;
+      this.direction = direction;
+      this.thickness = thickness;
+      this.padding = padding;
+      this.angle = angle;
+      this.radius = radius;
+      this.sin = Math.sin((angle - 180) / 2 * Math.PI / 180);
+      this.cos = Math.cos((180 - angle) / 2 * Math.PI / 180);
+      this.startAngle = 90 - angle / 2;
+
+      if (angle < 180) {
+        this.width = 2 * radius * this.cos;
+        this.height = radius;
+      } else {
+        this.width = radius * 2;
+        this.height = radius * (this.sin + 1) + 16;
+      }
+
+      this.rangeRadius = radius - thickness / 2 - padding;
+      this.angleOffset = direction === 'clock' ? 180 : 0;
       this.getRanges();
       this.getPins();
       this.labels = this.getLabels();
@@ -140,47 +169,15 @@ function (_Component) {
       }, 40);
     }
   }, {
-    key: "setStaticValues",
-    value: function setStaticValues() {
-      var _this$props2 = this.props,
-          style = _this$props2.style,
-          direction = _this$props2.direction,
-          thickness = _this$props2.thickness;
-      var _style$padding = style.padding,
-          padding = _style$padding === void 0 ? 0 : _style$padding,
-          _style$angle = style.angle,
-          angle = _style$angle === void 0 ? 180 : _style$angle,
-          _style$radius = style.radius,
-          radius = _style$radius === void 0 ? 100 : _style$radius;
-      this.sin = Math.sin((angle - 180) / 2 * Math.PI / 180);
-      this.cos = Math.cos((180 - angle) / 2 * Math.PI / 180);
-      this.startAngle = 90 - angle / 2;
-
-      if (angle < 180) {
-        this.width = 2 * radius * this.cos;
-        this.height = radius;
-      } else {
-        this.width = radius * 2;
-        this.height = radius * (this.sin + 1) + 16;
-      }
-
-      this.rangeRadius = radius - thickness / 2 - padding;
-      this.angleOffset = direction === 'clock' ? 180 : 0;
-    }
-  }, {
     key: "getAngleByValue",
     value: function getAngleByValue(value) {
-      var _this$props3 = this.props,
-          range = _this$props3.range,
-          style = _this$props3.style;
+      var range = this.props.range;
 
       var _range = _slicedToArray(range, 2),
           start = _range[0],
-          end = _range[1],
-          _style$angle2 = style.angle,
-          angle = _style$angle2 === void 0 ? 180 : _style$angle2;
+          end = _range[1];
 
-      return (value - start) * angle / (end - start) + this.startAngle;
+      return (value - start) * this.angle / (end - start) + this.startAngle;
     }
   }, {
     key: "getStyle",
@@ -234,18 +231,10 @@ function (_Component) {
   }, {
     key: "getRanges",
     value: function getRanges() {
-      var _this$props4 = this.props,
-          range = _this$props4.range,
-          pinStyle = _this$props4.pinStyle,
-          ranges = _this$props4.ranges,
-          style = _this$props4.style,
-          thickness = _this$props4.thickness;
-      var _style$padding2 = style.padding,
-          padding = _style$padding2 === void 0 ? 0 : _style$padding2,
-          _style$angle3 = style.angle,
-          angle = _style$angle3 === void 0 ? 180 : _style$angle3,
-          _style$radius2 = style.radius,
-          radius = _style$radius2 === void 0 ? 100 : _style$radius2;
+      var _this$props2 = this.props,
+          range = _this$props2.range,
+          pinStyle = _this$props2.pinStyle,
+          ranges = _this$props2.ranges;
 
       var _range2 = _slicedToArray(range, 2),
           start = _range2[0],
@@ -269,7 +258,7 @@ function (_Component) {
           stroke: stroke,
           slice: [s + this.angleOffset, e + this.angleOffset],
           r: this.rangeRadius,
-          lineWidth: thickness,
+          lineWidth: this.thickness,
           value: value
         });
       }
@@ -277,15 +266,9 @@ function (_Component) {
   }, {
     key: "getPins",
     value: function getPins(value) {
-      var _this$props5 = this.props,
-          pin = _this$props5.pin,
-          range = _this$props5.range,
-          GS = _this$props5.style,
-          thickness = _this$props5.thickness;
-      var _GS$padding = GS.padding,
-          padding = _GS$padding === void 0 ? 0 : _GS$padding,
-          _GS$radius = GS.radius,
-          radius = _GS$radius === void 0 ? 100 : _GS$radius;
+      var _this$props3 = this.props,
+          pin = _this$props3.pin,
+          range = _this$props3.range;
       this.pins = [];
 
       if (!pin) {
@@ -305,7 +288,7 @@ function (_Component) {
           defaultStyle = {
         width: 1,
         height: 6,
-        offset: thickness
+        offset: this.thickness
       };
 
       if (typeof style === 'function') {
@@ -328,7 +311,7 @@ function (_Component) {
             width = _getStyle.width,
             height = _getStyle.height;
 
-        var r = radius - height / 2 - offset - padding;
+        var r = this.radius - height / 2 - offset - this.padding;
         this.minPin = Math.min(this.minPin, r - height / 2);
         var angle = this.getAngleByValue(value);
         this.pins.push({
@@ -346,17 +329,10 @@ function (_Component) {
   }, {
     key: "getLabels",
     value: function getLabels() {
-      var _this$props6 = this.props,
-          label = _this$props6.label,
-          range = _this$props6.range,
-          GS = _this$props6.style,
-          thickness = _this$props6.thickness,
+      var _this$props4 = this.props,
+          label = _this$props4.label,
+          range = _this$props4.range,
           labels = [];
-      var _GS$angle = GS.angle,
-          angle = _GS$angle === void 0 ? 180 : _GS$angle,
-          _GS$radius2 = GS.radius,
-          radius = _GS$radius2 === void 0 ? 100 : _GS$radius2,
-          direction = GS.direction;
 
       var _range4 = _slicedToArray(range, 2),
           start = _range4[0],
@@ -375,8 +351,8 @@ function (_Component) {
             _Style$fontSize = Style.fontSize,
             fontSize = _Style$fontSize === void 0 ? 10 : _Style$fontSize,
             offset = Style.offset;
-        offset = offset || (this.minPin || radius - thickness) - 10;
-        var ang = this.getAngleByValue(value);
+        offset = offset || (this.minPin || this.radius - this.thickness) - 10;
+        var angle = this.getAngleByValue(value);
         labels.push({
           type: 'text',
           fill: color,
@@ -387,13 +363,13 @@ function (_Component) {
             x: -offset,
             y: 0
           },
-          rotate: ang + this.angleOffset,
-          angle: -ang + this.angleOffset
+          rotate: angle + this.angleOffset,
+          angle: -angle + this.angleOffset
         });
         value += step;
       }
 
-      if (angle === 360 && labels[labels.length - 1].rotate === 270) {
+      if (this.angle === 360 && labels[labels.length - 1].rotate === 270) {
         //prevent meeting first and last label
         labels.pop();
       }
@@ -403,9 +379,9 @@ function (_Component) {
   }, {
     key: "getText",
     value: function getText() {
-      var _this$props7 = this.props,
-          title = _this$props7.title,
-          style = _this$props7.style;
+      var _this$props5 = this.props,
+          title = _this$props5.title,
+          style = _this$props5.style;
 
       if (!title) {
         return [];
@@ -441,13 +417,10 @@ function (_Component) {
     value: function getItems() {
       var _this3 = this;
 
-      var _this$props8 = this.props,
-          pinStep = _this$props8.pinStep,
-          _this$props8$ranges = _this$props8.ranges,
-          ranges = _this$props8$ranges === void 0 ? [] : _this$props8$ranges,
-          style = _this$props8.style;
-      var _style$radius3 = style.radius,
-          radius = _style$radius3 === void 0 ? 100 : _style$radius3;
+      var _this$props6 = this.props,
+          pinStep = _this$props6.pinStep,
+          _this$props6$ranges = _this$props6.ranges,
+          ranges = _this$props6$ranges === void 0 ? [] : _this$props6$ranges;
       var pointer = this.state.pointer;
       var pins = this.pins;
       var rngs = this.ranges;
@@ -470,14 +443,7 @@ function (_Component) {
     value: function getHandle() {
       var _this4 = this;
 
-      var _this$props9 = this.props,
-          range = _this$props9.range,
-          style = _this$props9.style,
-          thickness = _this$props9.thickness;
-      var _style$padding3 = style.padding,
-          padding = _style$padding3 === void 0 ? 0 : _style$padding3,
-          _style$radius4 = style.radius,
-          radius = _style$radius4 === void 0 ? 100 : _style$radius4;
+      var range = this.props.range;
       var pointer = this.state.pointer;
 
       var _range5 = _slicedToArray(range, 2),
@@ -490,11 +456,11 @@ function (_Component) {
         var _p$width = p.width,
             width = _p$width === void 0 ? 2 : _p$width,
             _p$height = p.height,
-            height = _p$height === void 0 ? radius - thickness - padding : _p$height,
+            height = _p$height === void 0 ? _this4.radius - _this4.thickness - _this4.padding : _p$height,
             _p$color = p.color,
             color = _p$color === void 0 ? '#000' : _p$color,
             _p$radius = p.radius,
-            r = _p$radius === void 0 ? radius / 20 : _p$radius,
+            r = _p$radius === void 0 ? _this4.radius / 20 : _p$radius,
             _p$offset = p.offset,
             offset = _p$offset === void 0 ? 0 : _p$offset,
             value = p.value;
@@ -540,17 +506,11 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this$props10 = this.props,
-          _this$props10$ranges = _this$props10.ranges,
-          ranges = _this$props10$ranges === void 0 ? [] : _this$props10$ranges,
-          id = _this$props10.id,
-          className = _this$props10.className,
-          style = _this$props10.style,
-          direction = _this$props10.direction;
-      var _style$angle4 = style.angle,
-          angle = _style$angle4 === void 0 ? 180 : _style$angle4,
-          _style$radius5 = style.radius,
-          radius = _style$radius5 === void 0 ? 100 : _style$radius5;
+      var _this$props7 = this.props,
+          _this$props7$ranges = _this$props7.ranges,
+          ranges = _this$props7$ranges === void 0 ? [] : _this$props7$ranges,
+          id = _this$props7.id,
+          className = _this$props7.className;
       return _react.default.createElement("div", {
         className: "r-gauge".concat(className ? ' ' + className : ''),
         id: id,
@@ -559,10 +519,10 @@ function (_Component) {
         style: this.getStyle(),
         items: this.getItems(),
         rotateSetting: {
-          direction: direction
+          direction: this.direction
         },
         axisPosition: {
-          y: radius - this.sin + 'px'
+          y: this.radius - this.sin + 'px'
         }
       }));
     }
@@ -578,7 +538,7 @@ function (_Component) {
         };
       }
 
-      if (JSON.stringify(props.pin) !== state.prevPin || JSON.stringify(props.label) !== state.prevLabel || JSON.stringify(props.ranges) !== state.prevRanges) {
+      if (JSON.stringify(props.pin) !== state.prevPin || JSON.stringify(props.label) !== state.prevLabel || JSON.stringify(props.ranges) !== state.prevRanges || JSON.stringify(props.style) !== state.prevStyle) {
         state.setStatics();
         return {
           prevPin: JSON.stringify(props.pin),
@@ -602,11 +562,11 @@ RGauge.defaultProps = {
   style: {
     angle: 180,
     radius: 50,
-    padding: 0
+    padding: 0,
+    direction: 'clockwise',
+    thickness: 10
   },
   label: {},
-  direction: 'clockwise',
-  thickness: 10,
   pointer: [{
     value: 0,
     color: '#000'
