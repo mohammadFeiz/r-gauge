@@ -56,58 +56,106 @@ function (_Component) {
     _classCallCheck(this, RGauge);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(RGauge).call(this, props));
-    _this.maxHeight = 0;
+    _this.state = {
+      values: props.pointer.map(function (p) {
+        return props.start;
+      }),
+      first: true,
+      clear: _this.clear.bind(_assertThisInitialized(_this)),
+      update: _this.update.bind(_assertThisInitialized(_this))
+    };
 
     _this.setStatics();
 
-    var _this$props = _this.props,
-        range = _this$props.range,
-        _this$props$pointer = _this$props.pointer,
-        pointer = _this$props$pointer === void 0 ? [] : _this$props$pointer,
-        pin = _this$props.pin,
-        label = _this$props.label,
-        ranges = _this$props.ranges,
-        animate = _this$props.animate,
-        style = _this$props.style;
-    pointer = JSON.parse(JSON.stringify(pointer));
-    _this.state = {
-      pointer: animate ? pointer.map(function (p) {
-        p.value = range[0];
-        return p;
-      }) : pointer,
-      prevPin: JSON.stringify(pin),
-      prevLabel: JSON.stringify(label),
-      prevRanges: JSON.stringify(ranges),
-      prevStyle: JSON.stringify(style),
-      getValue: _this.getValue.bind(_assertThisInitialized(_this)),
-      animate: _this.animate.bind(_assertThisInitialized(_this)),
-      setStatics: _this.setStatics.bind(_assertThisInitialized(_this))
-    };
     return _this;
   }
 
   _createClass(RGauge, [{
+    key: "clear",
+    value: function clear() {
+      clearInterval(this.interval);
+    }
+  }, {
+    key: "update",
+    value: function update() {
+      var _this2 = this;
+
+      var _this$props = this.props,
+          animate = _this$props.animate,
+          pointer = _this$props.pointer,
+          start = _this$props.start,
+          end = _this$props.end;
+      var values = this.state.values;
+      var step = animate ? (end - start) * 2 / 100 : end - start;
+      values = JSON.parse(JSON.stringify(values));
+      this.interval = setInterval(function () {
+        var clear = [];
+
+        for (var i = 0; i < values.length; i++) {
+          var target = pointer[i].value;
+
+          if (values[i] < target) {
+            //اگر کمتر از مقدار نهایی بود
+            values[i] += step; //اضافه کن
+
+            if (values[i] > target) {
+              values[i] = target;
+              clear.push(true);
+            } else {
+              clear.push(false);
+            }
+          } else if (values[i] > target) {
+            values[i] -= step; //کم کن
+
+            if (values[i] < target) {
+              values[i] = target;
+              clear.push(true);
+            } else {
+              clear.push(false);
+            }
+          } else {
+            clear.push(true);
+          }
+        }
+
+        console.log(clear);
+
+        if (clear.indexOf(false) === -1) {
+          _this2.clear();
+        }
+
+        _this2.setState({
+          values: values
+        });
+      }, 20);
+    } // update(){
+    //   var {pointer} = this.props;
+    //   var {values} = this.state;
+    //   values = JSON.parse(JSON.stringify(values))
+    //   this.interval = setInterval(()=>{
+    //     var clear = [];
+    //     for(var i = 0; i < values.length; i++){
+    //       values[i]++;
+    //       if(values[i] > pointer[i].value){
+    //         values[i] = pointer[i].value;
+    //         clear.push(true);
+    //       }
+    //       else{clear.push(false)}
+    //     }
+    //     console.log(clear)
+    //     if(clear.indexOf(false) === -1){clearInterval(this.interval)}
+    //     this.setState({values})
+    //   },40)
+    // }
+
+  }, {
     key: "setStatics",
     value: function setStatics() {
-      var style = this.props.style;
-      var _style$padding = style.padding,
-          padding = _style$padding === void 0 ? 0 : _style$padding,
-          _style$angle = style.angle,
-          angle = _style$angle === void 0 ? 180 : _style$angle,
-          _style$radius = style.radius,
-          radius = _style$radius === void 0 ? 100 : _style$radius,
-          _style$direction = style.direction,
-          direction = _style$direction === void 0 ? 'clockwise' : _style$direction,
-          _style$thickness = style.thickness,
-          thickness = _style$thickness === void 0 ? 10 : _style$thickness;
-      this.direction = direction;
-      this.thickness = thickness;
-      this.padding = padding;
-      this.angle = angle;
-      this.radius = radius;
+      var _this$props2 = this.props,
+          radius = _this$props2.radius,
+          angle = _this$props2.angle;
       this.sin = Math.sin((angle - 180) / 2 * Math.PI / 180);
       this.cos = Math.cos((180 - angle) / 2 * Math.PI / 180);
-      this.startAngle = 90 - angle / 2;
 
       if (angle < 180) {
         this.width = 2 * radius * this.cos;
@@ -117,67 +165,19 @@ function (_Component) {
         this.height = radius * (this.sin + 1) + 16;
       }
 
-      this.rangeRadius = radius - thickness / 2 - padding;
-      this.angleOffset = direction === 'clock' ? 180 : 0;
       this.getRanges();
       this.getPins();
-      this.labels = this.getLabels();
-    }
-  }, {
-    key: "animate",
-    value: function animate(val) {
-      var _this2 = this;
-
-      clearInterval(this.interVal);
-      var pointer = this.state.pointer;
-      var sign = pointer.map(function (p, i) {
-        return Math.sign(val[i] - p.value) * Math.ceil(Math.abs(val[i] - p.value) / 40);
-      });
-      var newValue = pointer;
-      var clear = newValue.map(function () {
-        return false;
-      });
-      this.interval = setInterval(function () {
-        for (var i = 0; i < newValue.length; i++) {
-          if (clear[i]) {
-            continue;
-          }
-
-          newValue[i].value += sign[i];
-
-          if (sign[i] > 0) {
-            if (newValue[i].value >= val[i]) {
-              clear[i] = true;
-              newValue[i].value = val[i];
-              console.log(newValue);
-            }
-          } else {
-            if (newValue[i].value <= val[i]) {
-              clear[i] = true;
-              newValue[i].value = val[i];
-            }
-          }
-        }
-
-        if (clear.indexOf(false) == -1) {
-          clearInterval(_this2.interval);
-        }
-
-        _this2.setState({
-          value: newValue
-        });
-      }, 40);
+      this.getLabels();
+      this.getCircles();
     }
   }, {
     key: "getAngleByValue",
     value: function getAngleByValue(value) {
-      var range = this.props.range;
-
-      var _range = _slicedToArray(range, 2),
-          start = _range[0],
-          end = _range[1];
-
-      return (value - start) * this.angle / (end - start) + this.startAngle;
+      var _this$props3 = this.props,
+          start = _this$props3.start,
+          end = _this$props3.end,
+          angle = _this$props3.angle;
+      return (value - start) * angle / (end - start) + 90 - angle / 2;
     }
   }, {
     key: "getStyle",
@@ -191,10 +191,9 @@ function (_Component) {
     key: "getValue",
     value: function getValue(value) {
       var val;
-
-      var _this$props$range = _slicedToArray(this.props.range, 2),
-          start = _this$props$range[0],
-          end = _this$props$range[1];
+      var _this$props4 = this.props,
+          start = _this$props4.start,
+          end = _this$props4.end;
 
       if (value === undefined) {
         val = start;
@@ -231,16 +230,17 @@ function (_Component) {
   }, {
     key: "getRanges",
     value: function getRanges() {
-      var _this$props2 = this.props,
-          range = _this$props2.range,
-          pinStyle = _this$props2.pinStyle,
-          ranges = _this$props2.ranges;
-
-      var _range2 = _slicedToArray(range, 2),
-          start = _range2[0],
-          end = _range2[1];
-
+      var _this$props5 = this.props,
+          start = _this$props5.start,
+          end = _this$props5.end,
+          pinStyle = _this$props5.pinStyle,
+          ranges = _this$props5.ranges,
+          clockwise = _this$props5.clockwise,
+          thickness = _this$props5.thickness,
+          padding = _this$props5.padding,
+          radius = _this$props5.radius;
       this.ranges = [];
+      var angleOffset = clockwise ? 0 : 180;
 
       for (var i = 0; i < ranges.length; i++) {
         var _ranges$i$split = ranges[i].split(' '),
@@ -256,9 +256,9 @@ function (_Component) {
         this.ranges.push({
           type: 'arc',
           stroke: stroke,
-          slice: [s + this.angleOffset, e + this.angleOffset],
-          r: this.rangeRadius,
-          lineWidth: this.thickness,
+          slice: [s + angleOffset, e + angleOffset],
+          r: radius - thickness / 2 - padding,
+          lineWidth: thickness,
           value: value
         });
       }
@@ -266,18 +266,19 @@ function (_Component) {
   }, {
     key: "getPins",
     value: function getPins(value) {
-      var _this$props3 = this.props,
-          pin = _this$props3.pin,
-          range = _this$props3.range;
+      var _this$props6 = this.props,
+          pin = _this$props6.pin,
+          start = _this$props6.start,
+          end = _this$props6.end,
+          clockwise = _this$props6.clockwise,
+          thickness = _this$props6.thickness,
+          padding = _this$props6.padding,
+          radius = _this$props6.radius;
       this.pins = [];
 
       if (!pin) {
         return;
       }
-
-      var _range3 = _slicedToArray(range, 2),
-          start = _range3[0],
-          end = _range3[1];
 
       var step = pin.step,
           style = pin.style;
@@ -288,7 +289,7 @@ function (_Component) {
           defaultStyle = {
         width: 1,
         height: 6,
-        offset: this.thickness
+        offset: thickness
       };
 
       if (typeof style === 'function') {
@@ -303,6 +304,8 @@ function (_Component) {
         };
       }
 
+      var angleOffset = clockwise ? 0 : 180;
+
       while (value <= end) {
         var _getStyle = getStyle(value),
             offset = _getStyle.offset,
@@ -311,7 +314,7 @@ function (_Component) {
             width = _getStyle.width,
             height = _getStyle.height;
 
-        var r = this.radius - height / 2 - offset - this.padding;
+        var r = radius - height / 2 - offset - padding;
         this.minPin = Math.min(this.minPin, r - height / 2);
         var angle = this.getAngleByValue(value);
         this.pins.push({
@@ -319,7 +322,7 @@ function (_Component) {
           x: 0,
           y: 0,
           stroke: color,
-          slice: [angle - width / 2 + this.angleOffset, angle + width / 2 + this.angleOffset],
+          slice: [angle - width / 2 + angleOffset, angle + width / 2 + angleOffset],
           r: r,
           lineWidth: height
         });
@@ -329,19 +332,20 @@ function (_Component) {
   }, {
     key: "getLabels",
     value: function getLabels() {
-      var _this$props4 = this.props,
-          label = _this$props4.label,
-          range = _this$props4.range,
-          labels = [];
-
-      var _range4 = _slicedToArray(range, 2),
-          start = _range4[0],
-          end = _range4[1];
-
+      var _this$props7 = this.props,
+          label = _this$props7.label,
+          start = _this$props7.start,
+          end = _this$props7.end,
+          clockwise = _this$props7.clockwise,
+          thickness = _this$props7.thickness,
+          radius = _this$props7.radius,
+          angle = _this$props7.angle;
       var step = label.step,
           style = label.style;
       var value = Math.round((start - step) / step) * step;
       value = value < start ? start : value;
+      var angleOffset = clockwise ? 0 : 180;
+      this.labels = [];
 
       while (value <= end) {
         var Style = _jquery.default.extend({}, {}, typeof style === 'function' ? style(value) : style);
@@ -351,9 +355,9 @@ function (_Component) {
             _Style$fontSize = Style.fontSize,
             fontSize = _Style$fontSize === void 0 ? 10 : _Style$fontSize,
             offset = Style.offset;
-        offset = offset || (this.minPin || this.radius - this.thickness) - 10;
-        var angle = this.getAngleByValue(value);
-        labels.push({
+        offset = offset || (this.minPin || radius - thickness) - 10;
+        var ang = this.getAngleByValue(value);
+        this.labels.push({
           type: 'text',
           fill: color,
           text: value,
@@ -363,25 +367,21 @@ function (_Component) {
             x: -offset,
             y: 0
           },
-          rotate: angle + this.angleOffset,
-          angle: -angle + this.angleOffset
+          rotate: ang + angleOffset,
+          angle: -ang + angleOffset
         });
         value += step;
       }
 
-      if (this.angle === 360 && labels[labels.length - 1].rotate === 270) {
+      if (angle === 360 && labels[labels.length - 1].rotate === 270) {
         //prevent meeting first and last label
         labels.pop();
       }
-
-      return labels;
     }
   }, {
     key: "getText",
     value: function getText() {
-      var _this$props5 = this.props,
-          title = _this$props5.title,
-          style = _this$props5.style;
+      var title = this.props.title;
 
       if (!title) {
         return [];
@@ -399,7 +399,7 @@ function (_Component) {
           _title$fontSize = title.fontSize,
           fontSize = _title$fontSize === void 0 ? 14 : _title$fontSize;
       text = typeof text === 'function' ? text({
-        pointer: this.state.pointer,
+        pointer: this.props.pointer,
         ranges: this.props.ranges
       }) : text;
       return {
@@ -408,71 +408,62 @@ function (_Component) {
         y: y,
         text: text,
         fill: color,
-        fontSize: fontSize,
-        rotate: this.angleOffset
+        fontSize: fontSize
       };
     }
   }, {
-    key: "getItems",
-    value: function getItems() {
-      var _this3 = this;
+    key: "getCircles",
+    value: function getCircles() {
+      var _this$props8 = this.props,
+          radius = _this$props8.radius,
+          pointer = _this$props8.pointer;
+      this.circles = [];
 
-      var _this$props6 = this.props,
-          pinStep = _this$props6.pinStep,
-          _this$props6$ranges = _this$props6.ranges,
-          ranges = _this$props6$ranges === void 0 ? [] : _this$props6$ranges;
-      var pointer = this.state.pointer;
-      var pins = this.pins;
-      var rngs = this.ranges;
-      var handle = this.getHandle();
-      var labels = this.labels;
-      var text = this.getText();
-      var circles = pointer.map(function (p, i) {
-        return {
+      for (var i = 0; i < pointer.length; i++) {
+        var _pointer$i = pointer[i],
+            _pointer$i$color = _pointer$i.color,
+            color = _pointer$i$color === void 0 ? '#000' : _pointer$i$color,
+            _pointer$i$radius = _pointer$i.radius,
+            r = _pointer$i$radius === void 0 ? radius / 20 : _pointer$i$radius;
+        this.circles.push({
           type: 'arc',
-          x: 0,
-          y: 0,
-          r: _this3.handleRadius[i],
-          fill: _this3.handleColor[i]
-        };
-      });
-      return rngs.concat(pins, handle, circles, labels, text);
+          r: r,
+          fill: color
+        });
+      }
     }
   }, {
-    key: "getHandle",
-    value: function getHandle() {
-      var _this4 = this;
+    key: "getHandles",
+    value: function getHandles() {
+      var _this$props9 = this.props,
+          clockwise = _this$props9.clockwise,
+          thickness = _this$props9.thickness,
+          padding = _this$props9.padding,
+          radius = _this$props9.radius,
+          pointer = _this$props9.pointer;
+      var values = this.state.values;
+      var handles = [];
+      var angleOffset = clockwise ? 0 : 180;
 
-      var range = this.props.range;
-      var pointer = this.state.pointer;
-
-      var _range5 = _slicedToArray(range, 2),
-          start = _range5[0],
-          end = _range5[1];
-
-      this.handleColor = [];
-      this.handleRadius = [];
-      return pointer.map(function (p, i) {
-        var _p$width = p.width,
-            width = _p$width === void 0 ? 2 : _p$width,
-            _p$height = p.height,
-            height = _p$height === void 0 ? _this4.radius - _this4.thickness - _this4.padding : _p$height,
-            _p$color = p.color,
-            color = _p$color === void 0 ? '#000' : _p$color,
-            _p$radius = p.radius,
-            r = _p$radius === void 0 ? _this4.radius / 20 : _p$radius,
-            _p$offset = p.offset,
-            offset = _p$offset === void 0 ? 0 : _p$offset,
-            value = p.value;
-
-        _this4.handleColor.push(color);
-
-        _this4.handleRadius.push(r);
-
-        return {
-          lineWidth: width,
+      for (var i = 0; i < pointer.length; i++) {
+        var _pointer$i2 = pointer[i],
+            _pointer$i2$width = _pointer$i2.width,
+            width = _pointer$i2$width === void 0 ? 2 : _pointer$i2$width,
+            _pointer$i2$height = _pointer$i2.height,
+            height = _pointer$i2$height === void 0 ? radius - thickness - padding : _pointer$i2$height,
+            _pointer$i2$color = _pointer$i2.color,
+            fill = _pointer$i2$color === void 0 ? '#000' : _pointer$i2$color,
+            _pointer$i2$radius = _pointer$i2.radius,
+            r = _pointer$i2$radius === void 0 ? radius / 20 : _pointer$i2$radius,
+            _pointer$i2$offset = _pointer$i2.offset,
+            offset = _pointer$i2$offset === void 0 ? 0 : _pointer$i2$offset;
+        handles.push({
           type: 'line',
-          fill: color,
+          fill: fill,
+          pivot: {
+            x: -offset,
+            y: 0
+          },
           points: [{
             x: 0,
             y: 0
@@ -486,13 +477,11 @@ function (_Component) {
             x: 0,
             y: -width / 2
           }],
-          pivot: {
-            x: -offset,
-            y: 0
-          },
-          rotate: _this4.getAngleByValue(value) + _this4.angleOffset
-        };
-      });
+          rotate: this.getAngleByValue(values[i]) + angleOffset
+        });
+      }
+
+      return handles;
     }
   }, {
     key: "getContainerStyle",
@@ -506,47 +495,44 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this$props7 = this.props,
-          _this$props7$ranges = _this$props7.ranges,
-          ranges = _this$props7$ranges === void 0 ? [] : _this$props7$ranges,
-          id = _this$props7.id,
-          className = _this$props7.className;
+      var _this$props10 = this.props,
+          _this$props10$ranges = _this$props10.ranges,
+          ranges = _this$props10$ranges === void 0 ? [] : _this$props10$ranges,
+          id = _this$props10.id,
+          className = _this$props10.className,
+          clockwise = _this$props10.clockwise,
+          radius = _this$props10.radius;
       return _react.default.createElement("div", {
         className: "r-gauge".concat(className ? ' ' + className : ''),
         id: id,
         style: this.getContainerStyle()
       }, _react.default.createElement(_rCanvas.default, {
         style: this.getStyle(),
-        items: this.getItems(),
+        items: this.ranges.concat(this.pins, this.getHandles(), this.circles, this.labels, this.getText()),
         rotateSetting: {
-          direction: this.direction
+          direction: clockwise ? 'clockwise' : 'clock'
         },
         axisPosition: {
-          y: this.radius - this.sin + 'px'
+          y: radius - this.sin + 'px'
         }
       }));
     }
   }], [{
     key: "getDerivedStateFromProps",
     value: function getDerivedStateFromProps(props, state) {
-      if (JSON.stringify(props.pointer) !== state.prevPointer) {
-        state.animate(props.pointer.map(function (p) {
-          return state.getValue(p.value);
-        }));
+      if (state.first) {
+        //اولین اجرا
+        state.update();
         return {
-          prevPointer: JSON.stringify(props.pointer)
+          first: false,
+          values: props.pointer.map(function (p) {
+            return props.start;
+          })
         };
       }
 
-      if (JSON.stringify(props.pin) !== state.prevPin || JSON.stringify(props.label) !== state.prevLabel || JSON.stringify(props.ranges) !== state.prevRanges || JSON.stringify(props.style) !== state.prevStyle) {
-        state.setStatics();
-        return {
-          prevPin: JSON.stringify(props.pin),
-          prevLabel: JSON.stringify(props.label),
-          prevRanges: JSON.stringify(props.ranges)
-        };
-      }
-
+      state.clear();
+      state.update();
       return null;
     }
   }]);
@@ -556,19 +542,19 @@ function (_Component) {
 
 exports.default = RGauge;
 RGauge.defaultProps = {
-  range: [0, 100],
+  start: 0,
+  end: 100,
   ranges: ['100 red'],
   text: '',
-  style: {
-    angle: 180,
-    radius: 50,
-    padding: 0,
-    direction: 'clockwise',
-    thickness: 10
-  },
+  angle: 180,
   label: {},
   pointer: [{
     value: 0,
     color: '#000'
-  }]
+  }],
+  clockwise: false,
+  animate: true,
+  thickness: 10,
+  padding: 0,
+  radius: 50
 };
