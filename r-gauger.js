@@ -28,6 +28,7 @@ export default class RGauge extends Component{
     clearInterval(this.interval);
   }
   update(){
+    if(this.props.reset){this.setStatics();}
     var {animate,pointer,start,end} = this.props;
     var {values} = this.state;
     var step = animate?(end - start) * 2 /100:end - start;
@@ -53,26 +54,6 @@ export default class RGauge extends Component{
       this.setState({values})
     },20)
   }
-  // update(){
-  //   var {pointer} = this.props;
-  //   var {values} = this.state;
-  //   values = JSON.parse(JSON.stringify(values))
-  //   this.interval = setInterval(()=>{
-  //     var clear = [];
-  //     for(var i = 0; i < values.length; i++){
-  //       values[i]++;
-  //       if(values[i] > pointer[i].value){
-  //         values[i] = pointer[i].value;
-  //         clear.push(true);
-  //       }
-  //       else{clear.push(false)}
-        
-  //     }
-  //     console.log(clear)
-  //     if(clear.indexOf(false) === -1){clearInterval(this.interval)}
-  //     this.setState({values})
-  //   },40)
-  // }
   setStatics(){
     var {radius,angle} = this.props;
     this.sin = Math.sin((angle - 180) / 2 * Math.PI / 180);

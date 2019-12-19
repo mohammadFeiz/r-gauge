@@ -80,6 +80,10 @@ function (_Component) {
     value: function update() {
       var _this2 = this;
 
+      if (this.props.reset) {
+        this.setStatics();
+      }
+
       var _this$props = this.props,
           animate = _this$props.animate,
           pointer = _this$props.pointer,
@@ -128,26 +132,7 @@ function (_Component) {
           values: values
         });
       }, 20);
-    } // update(){
-    //   var {pointer} = this.props;
-    //   var {values} = this.state;
-    //   values = JSON.parse(JSON.stringify(values))
-    //   this.interval = setInterval(()=>{
-    //     var clear = [];
-    //     for(var i = 0; i < values.length; i++){
-    //       values[i]++;
-    //       if(values[i] > pointer[i].value){
-    //         values[i] = pointer[i].value;
-    //         clear.push(true);
-    //       }
-    //       else{clear.push(false)}
-    //     }
-    //     console.log(clear)
-    //     if(clear.indexOf(false) === -1){clearInterval(this.interval)}
-    //     this.setState({values})
-    //   },40)
-    // }
-
+    }
   }, {
     key: "setStatics",
     value: function setStatics() {
