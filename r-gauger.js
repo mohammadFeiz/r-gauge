@@ -7,7 +7,6 @@ export default class RGauge extends Component{
     this.state = {
       values:props.pointer.map((p)=>props.start),
       first:true,
-      clear:this.clear.bind(this),
       update:this.update.bind(this)
     };
     this.setStatics();
@@ -20,14 +19,18 @@ export default class RGauge extends Component{
         values:props.pointer.map((p)=>props.start),
       };
     }
-    state.clear();
-    state.update();
+    //فقط در آپدیت استیت از خارج آپدیت کن
+    if(!state.internalUpdate){
+      state.update();
+    }
+    else{
+      return {internalUpdate:false}
+    }
     return null
   }
-  clear(){
-    clearInterval(this.interval);
-  }
+  
   update(){
+    clearInterval(this.interval);
     if(this.props.reset){this.setStatics();}
     var {animate,pointer,start,end} = this.props;
     var {values} = this.state;
@@ -49,9 +52,8 @@ export default class RGauge extends Component{
         }
         else{clear.push(true);}        
       }
-      console.log(clear)
-      if(clear.indexOf(false) === -1){this.clear();}
-      this.setState({values})
+      if(clear.indexOf(false) === -1){clearInterval(this.interval);}
+      this.setState({values,internalUpdate:true})
     },20)
   }
   setStatics(){
@@ -158,7 +160,7 @@ export default class RGauge extends Component{
         });    
         value += step;
     }
-    if(angle === 360 && labels[labels.length - 1].rotate === 270){//prevent meeting first and last label
+    if(angle === 360 && this.labels[this.labels.length - 1].rotate === 270){//prevent meeting first and last label
       labels.pop();
     } 
   }
@@ -214,5 +216,5 @@ export default class RGauge extends Component{
   }
 } 
 RGauge.defaultProps = {
-  start:0,end:100,ranges:['100 red'],text:'',angle:180,label:{},pointer:[{value:0,color:'#000'}],clockwise:false,animate:true,thickness:10,padding:0,radius:50
+  start:0,end:100,ranges:['100 red'],text:'',angle:180,label:{},pointer:[{value:0,color:'#000'}],clockwise:false,animate:false,thickness:10,padding:0,radius:50
 }

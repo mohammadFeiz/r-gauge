@@ -61,7 +61,6 @@ function (_Component) {
         return props.start;
       }),
       first: true,
-      clear: _this.clear.bind(_assertThisInitialized(_this)),
       update: _this.update.bind(_assertThisInitialized(_this))
     };
 
@@ -71,14 +70,11 @@ function (_Component) {
   }
 
   _createClass(RGauge, [{
-    key: "clear",
-    value: function clear() {
-      clearInterval(this.interval);
-    }
-  }, {
     key: "update",
     value: function update() {
       var _this2 = this;
+
+      clearInterval(this.interval);
 
       if (this.props.reset) {
         this.setStatics();
@@ -122,14 +118,13 @@ function (_Component) {
           }
         }
 
-        console.log(clear);
-
         if (clear.indexOf(false) === -1) {
-          _this2.clear();
+          clearInterval(_this2.interval);
         }
 
         _this2.setState({
-          values: values
+          values: values,
+          internalUpdate: true
         });
       }, 20);
     }
@@ -358,7 +353,7 @@ function (_Component) {
         value += step;
       }
 
-      if (angle === 360 && labels[labels.length - 1].rotate === 270) {
+      if (angle === 360 && this.labels[this.labels.length - 1].rotate === 270) {
         //prevent meeting first and last label
         labels.pop();
       }
@@ -514,10 +509,17 @@ function (_Component) {
             return props.start;
           })
         };
+      } //فقط در آپدیت استیت از خارج آپدیت کن
+
+
+      if (!state.internalUpdate) {
+        state.update();
+      } else {
+        return {
+          internalUpdate: false
+        };
       }
 
-      state.clear();
-      state.update();
       return null;
     }
   }]);
@@ -538,7 +540,7 @@ RGauge.defaultProps = {
     color: '#000'
   }],
   clockwise: false,
-  animate: true,
+  animate: false,
   thickness: 10,
   padding: 0,
   radius: 50

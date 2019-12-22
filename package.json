@@ -1,6 +1,6 @@
 {
   "name": "r-gauger",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "react js gauge, wonderful customizable style",
   "main": "index.js",
   "scripts": {
