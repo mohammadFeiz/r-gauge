@@ -1,7 +1,7 @@
 import React ,{Component}from 'react';
 import RCanvas from 'r-canvas';
 
-export default class RGauge extends Component{
+export default class RGauger extends Component{
   constructor(props){
     super(props);
     this.getDetails();
@@ -113,4 +113,4 @@ export default class RGauge extends Component{
     )
   }
 }
-RGauge.defaultProps = {angle:300,offsetAngle:0,start:0,end:100,thickness:10,radius:70,label:{},scale:{},direction:'clock',position:['50%','50%']}
+RGauger.defaultProps = {angle:300,offsetAngle:0,start:0,end:100,thickness:10,radius:70,label:{},scale:{},direction:'clock',position:['50%','50%']}
