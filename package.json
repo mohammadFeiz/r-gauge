@@ -1,6 +1,6 @@
 {
   "name": "r-gauger",
-  "version": "1.0.4",
+  "version": "2.0.1",
   "description": "react js gauge, wonderful customizable style",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "url": "git+https://github.com/mohammadFeiz/r-gauge.git"
   },
   "keywords": ["gage","gauge","js","react gauge","react"],
-  "author": "",
+  "author": "mohamad sharif feiz <feiz.ms@gmail.com> (http://www.frontend-master.ir)",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/mohammadFeiz/r-gauge/issues"
