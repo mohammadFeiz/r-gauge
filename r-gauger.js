@@ -12,7 +12,8 @@ export default class RGauger extends Component{
     this.startAngle = 270 - angle / 2;
     this.scales = this.getScales();
     this.labels = this.getLabels();
-    this.slice = [this.getAngleByValue(start),this.getAngleByValue(end)]
+    this.slice = [this.getAngleByValue(start),this.getAngleByValue(end)];
+    this.circles = this.getCircles();
   }
   getAngleByValue(value){
     var {start,end,angle,offsetAngle,direction} = this.props;
@@ -38,6 +39,7 @@ export default class RGauger extends Component{
   }
   getCircles(){
     var {circles} = this.props;
+    if(!circles || circles.length === 0){return []}
     return circles.map((c)=>{
       let {radius:r=20,color:stroke = '#555',lineWidth = 1} = c;
       return {r:c.radius,lineWidth:c.lineWidth,stroke:c.color,slice:this.slice}
@@ -108,7 +110,7 @@ export default class RGauger extends Component{
       text:typeof value === 'function'?value(this.props):value,x:left,y:top,rotate,fontSize,fill:color
     }
   }
-  getItems(){return this.getCircles().concat(this.getRanges(),this.labels,this.scales,this.getTexts(),this.getHandles())} 
+  getItems(){return this.circles.concat(this.getRanges(),this.labels,this.scales,this.getTexts(),this.getHandles())} 
   getStyle(){
     var Style = {...this.props.style};
     Style.width = Style.width || '200px';

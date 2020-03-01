@@ -66,6 +66,7 @@ var RGauger = /*#__PURE__*/function (_Component) {
       this.scales = this.getScales();
       this.labels = this.getLabels();
       this.slice = [this.getAngleByValue(start), this.getAngleByValue(end)];
+      this.circles = this.getCircles();
     }
   }, {
     key: "getAngleByValue",
@@ -127,6 +128,11 @@ var RGauger = /*#__PURE__*/function (_Component) {
       var _this3 = this;
 
       var circles = this.props.circles;
+
+      if (!circles || circles.length === 0) {
+        return [];
+      }
+
       return circles.map(function (c) {
         var _c$radius = c.radius,
             r = _c$radius === void 0 ? 20 : _c$radius,
@@ -355,7 +361,7 @@ var RGauger = /*#__PURE__*/function (_Component) {
   }, {
     key: "getItems",
     value: function getItems() {
-      return this.getCircles().concat(this.getRanges(), this.labels, this.scales, this.getTexts(), this.getHandles());
+      return this.circles.concat(this.getRanges(), this.labels, this.scales, this.getTexts(), this.getHandles());
     }
   }, {
     key: "getStyle",
