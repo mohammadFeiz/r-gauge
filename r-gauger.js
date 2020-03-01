@@ -20,6 +20,7 @@ export default class RGauger extends Component{
   }
   getCircles(){
     var {ranges = [],radius,thickness} = this.props;
+    if(!thickness){return []}
     var Ranges = (typeof ranges === 'function'?ranges(this.props):ranges).map((r)=>{ 
       let {value,color} = r;
       value = parseFloat(value); 
@@ -59,9 +60,9 @@ export default class RGauger extends Component{
     if(!step){return [];}
     var value = start;
     while(value <= end){
-      var {offset,color = '#000',width,height = 5} = Style(value);
+      var {offset = 0,color = '#000',width,height = 5} = Style(value);
       var angle = this.getAngleByValue(value);
-      scales.push({stroke:color,points:[[0,0],[height,0]],lineWidth:width,pivot:[-(radius - height - thickness / 2),0],rotate:angle,})
+      scales.push({stroke:color,points:[[0,0],[height,0]],lineWidth:width,pivot:[-(radius - height - thickness / 2 + offset),0],rotate:angle,})
       value+=step;
     } 
     return scales;
@@ -79,7 +80,7 @@ export default class RGauger extends Component{
     var angle = this.getAngleByValue(value);
     return { 
       items:[
-        {fill:color,points:[[0,-width / 2],[height,0],[0,width / 2]],lineWidth:width,pivot:[offset,0],rotate:angle,close:true},
+        {fill:color,points:[[0,-width / 2],[height,0],[0,width / 2]],lineWidth:width,pivot:[-offset,0],rotate:angle,close:true},
         {r:handleRadius,fill:color}
       ] 
     }
@@ -93,9 +94,9 @@ export default class RGauger extends Component{
   getText(text){
     var {value,style = {}} = text;
     var Style = typeof style === 'function'?style(this.props):style;
-    var {top = 20,left = 0,fontSize = 10,color = '#000'} = Style;
+    var {top = 20,left = 0,fontSize = 10,color = '#000',rotate = 0} = Style;
     return {
-      text:typeof value === 'function'?value(this.props):value,x:left,y:top,fontSize,fill:color
+      text:typeof value === 'function'?value(this.props):value,x:left,y:top,rotate,fontSize,fill:color
     }
   }
   getItems(){return this.getCircles().concat(this.labels,this.scales,this.getTexts(),this.getHandles())} 

@@ -85,6 +85,11 @@ var RGauger = /*#__PURE__*/function (_Component) {
           ranges = _this$props2$ranges === void 0 ? [] : _this$props2$ranges,
           radius = _this$props2.radius,
           thickness = _this$props2.thickness;
+
+      if (!thickness) {
+        return [];
+      }
+
       var Ranges = (typeof ranges === 'function' ? ranges(this.props) : ranges).map(function (r) {
         var value = r.value,
             color = r.color;
@@ -197,7 +202,8 @@ var RGauger = /*#__PURE__*/function (_Component) {
 
       while (value <= end) {
         var _Style2 = Style(value),
-            offset = _Style2.offset,
+            _Style2$offset = _Style2.offset,
+            offset = _Style2$offset === void 0 ? 0 : _Style2$offset,
             _Style2$color = _Style2.color,
             color = _Style2$color === void 0 ? '#000' : _Style2$color,
             width = _Style2.width,
@@ -209,7 +215,7 @@ var RGauger = /*#__PURE__*/function (_Component) {
           stroke: color,
           points: [[0, 0], [height, 0]],
           lineWidth: width,
-          pivot: [-(radius - height - thickness / 2), 0],
+          pivot: [-(radius - height - thickness / 2 + offset), 0],
           rotate: angle
         });
         value += step;
@@ -270,7 +276,7 @@ var RGauger = /*#__PURE__*/function (_Component) {
           fill: color,
           points: [[0, -width / 2], [height, 0], [0, width / 2]],
           lineWidth: width,
-          pivot: [offset, 0],
+          pivot: [-offset, 0],
           rotate: angle,
           close: true
         }, {
@@ -309,11 +315,14 @@ var RGauger = /*#__PURE__*/function (_Component) {
           _Style$fontSize2 = Style.fontSize,
           fontSize = _Style$fontSize2 === void 0 ? 10 : _Style$fontSize2,
           _Style$color2 = Style.color,
-          color = _Style$color2 === void 0 ? '#000' : _Style$color2;
+          color = _Style$color2 === void 0 ? '#000' : _Style$color2,
+          _Style$rotate = Style.rotate,
+          rotate = _Style$rotate === void 0 ? 0 : _Style$rotate;
       return {
         text: typeof value === 'function' ? value(this.props) : value,
         x: left,
         y: top,
+        rotate: rotate,
         fontSize: fontSize,
         fill: color
       };
