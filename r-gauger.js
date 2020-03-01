@@ -1,113 +1,126 @@
- 
- export default {
-  g1:{
-   scale:{
-     step:5,
-     style:function(value){
-       if(value % 10 === 0){return {height:10,width:1}} 
-       if(value % 5 === 0){return {height:5,width:0.5}} 
-     }
-   },
-   label:{
-     step:10,
-   },
-   start:10,
-   end:90,
-   handle:[{value:80,style:{color:'lightgreen'}},{value:50,style:{color:'red'}}],
-   ranges:[{value:15,color:'red'},{value:60,color:'orange'},{value:90,color:'green'}],
-   text:{value:'Distance(KM)',style:{top:20,color:'#000',fontSize:8}},
-   angle:210,
-   animate:true,
-   direction:'clockwise',thickness:2,radius:80,
-   circles:[{radius:57,color:'#555',lineWidth:1},{radius:90,lineWidth:2}]  
-},
-g2:{
-  pin:{
-   step:5,
-   style:function(value){
-     if(value % 20 === 0){return {height:8,width:.6,color:'#bbb',offset:13}}
-     if(value % 5 === 0){return {height:5,width:.6,color:'#bbb',offset:13}}
-   },
- },
- label:{
-   step:20,
-   style:{fontSize:8,color:'#444'}
- },
- start:0,end:180,
- pointer:[{value:124,width:5,color:'#8EBC00'}],
- ranges:['100% #eee'],
- title:{text:'Speed(km/h)',y:30,color:'#aaa',fontSize:10},
- angle:250,thickness:10,padding:5,radius:80,
- 
-},
-g3:{
-   label:{
-     step:50,
-     style:{fontSize:10,color:'#444'}
-   },
-   start:0,end:50,
-   pointer:[{value:35,width:2}],
-   ranges:['70% #13C3C3','100% #ddd'],
-   title:{text:'Speed(km/h)',y:30,color:'#aaa',fontSize:10},
-   angle:120,thickness:30,radius:80,
- },
- g4:{
-   pin:{
-     step:5,
-     style:{width:1.5,height:2,offset:-6,color:'#666'}
-   },
-   label:{
-     step:20,
-     style:{fontSize:8,color:'#444',offset:60}
-   },
-   range:0,end:120,
-   pointer:[{value:24,width:4,color:'#777'}],
-   ranges:['50 #ddd','100% #748ba7'],
-   title:{text:'Angle(degree)',y:-15,color:'#777',fontSize:8},
-   clockwise:true,
-   angle:320,thickness:7,padding:24,radius:70,
- },
- g5:{
-   id:'cruz',
-   pin:{
-     step:5,
-     style:function(value){
-       if(value % 20 === 0){return {height:10,width:1.6}}
-       return {height:5}
-     }
-   },
-   label:{
-     step:20,
-     style:function(value){
-       return {fontSize:8,color:value> 140?'red':'#ddd'}
-     }
-   },
-   start:0,end:220,
-   pointer:[{value:124,width:4,color:'#ddd',radius:6}],
-   ranges:['159 #fff','100% red'],
-   title:{text:'Speed ( km / h )',y:10,color:'#ddd',fontSize:8},
-   angle:180,
-   clockwise:true,thickness:0,padding:24,radius:100,
- },
- g6:{
-   pin:{step:10},
-   label:{
-     step:10,
-     style:{fontSize:8}
-   },
-   start:0,end:100,
-   pointer:[
-     {value:50,width:20,color:'red',height:10,offset:27},
-     {value:90,width:20,color:'#ddd',radius:30}],
-   ranges:['60 #ddd','100% orange'],
-   title:{text:function(obj){return obj.pointer[0].value + '%' + obj.pointer[1].value + '%'},color:'#fff',fontSize:12},
-   angle:280,animate:true,
-   clockwise:true,thickness:10,padding:30,radius:100,
- },
- g7:{
-   thickness:10,
-   angle:309,
-   radius:80,
-   ranges:[{value:50,color:'red'},{value:100,color:'blue'}]
- }
+import React ,{Component}from 'react';
+import RCanvas from 'r-canvas';
+
+export default class RGauger extends Component{
+  constructor(props){
+    super(props);
+    this.getDetails();
+  }
+  getPercentByValue(value,start,end){return 100 * (value - start) / (end - start)}
+  getDetails(){
+    var {angle,start,end} = this.props;
+    this.startAngle = 270 - angle / 2;
+    this.scales = this.getScales();
+    this.labels = this.getLabels();
+    this.slice = [this.getAngleByValue(start),this.getAngleByValue(end)]
+  }
+  getAngleByValue(value){
+    var {start,end,angle,offsetAngle,direction} = this.props;
+    var percent = this.getPercentByValue(value,start,end);
+    return this.startAngle + angle / 100 * percent + offsetAngle + (direction === 'clockwise'?180:0);
+  }
+  getRanges(){
+    var {ranges = [],radius,thickness} = this.props;
+    if(!thickness){return []}
+    var Ranges = (typeof ranges === 'function'?ranges(this.props):ranges).map((r)=>{ 
+      let {value,color} = r;
+      value = parseFloat(value); 
+      return {color,angle:this.getAngleByValue(value)}
+    })
+    var circles = [];
+    for(var i = 0; i < Ranges.length; i++){
+      var {color,angle} = Ranges[i];
+      var startAngle = i === 0?this.getAngleByValue(this.props.start):Ranges[i - 1].angle;
+      var endAngle = angle;
+      circles.push({r:radius,slice:[startAngle,endAngle],stroke:color,lineWidth:thickness})
+    }
+    return circles;
+  }
+  getCircles(){
+    var {circles} = this.props;
+    return circles.map((c)=>{
+      let {radius:r=20,color:stroke = '#555',lineWidth = 1} = c;
+      return {r:c.radius,lineWidth:c.lineWidth,stroke:c.color,slice:this.slice}
+    });
+
+  }
+  getLabels(){
+    var labels = [];
+    var {start,end,label,radius,thickness,angle:mainAngle} = this.props;
+    var {step,style = {},edit} = label;
+    var Style = typeof style === 'function'?(value)=>{style(value,this.props)}:()=>{return style;}
+    if(!step){return [];}
+    var value = start;
+    while(value <= end){
+      var {fontSize = 10,offset,color = '#000'} = Style(value);
+      var pivot = offset || -(radius - thickness/2 - fontSize - 3);
+      var angle = this.getAngleByValue(value);
+      labels.push({text:edit?edit(value):value,fill:color,pivot:[pivot,0],rotate:angle,angle:-angle,fontSize})
+      value+=step;
+    } 
+    if(mainAngle === 360 && labels[labels.length - 1].rotate % 90 === 0){labels.pop();}
+    return labels;
+  }
+  getScales(){
+    var scales = [];
+    var {start,end,scale,radius,thickness} = this.props;
+    var {step,style = {}} = scale;
+    var Style = typeof style === 'function'?(value)=>{return style(value,this.props)}:()=>{return style;}
+    if(!step){return [];}
+    var value = start;
+    while(value <= end){
+      var {offset = 0,color = '#000',width,height = 5} = Style(value);
+      var angle = this.getAngleByValue(value);
+      scales.push({stroke:color,points:[[0,0],[height,0]],lineWidth:width,pivot:[-(radius - height - thickness / 2 + offset),0],rotate:angle,})
+      value+=step;
+    } 
+    return scales;
+  }
+  getHandles(){
+    var {handle} = this.props;
+    if(!handle){return [];}
+    return Array.isArray(handle)?handle.map((h)=>this.getHandle(h)):[this.getHandle(handle)];
+  }
+  getHandle(handle){
+    var {start,end,radius,thickness} = this.props;
+    var {value = false,style = {}} = handle;
+    var Style = typeof style === 'function'?(value)=>{style(value,this.props)}:()=>{return style;}
+    var {offset = 0,color = '#000',width = 4,height = (radius - thickness/2),radius:handleRadius=4} = Style(value);
+    var angle = this.getAngleByValue(value);
+    return { 
+      items:[
+        {fill:color,points:[[0,-width / 2],[height,0],[0,width / 2]],lineWidth:width,pivot:[-offset,0],rotate:angle,close:true},
+        {r:handleRadius,fill:color}
+      ] 
+    }
+  }
+  getTexts(){
+    var {text} = this.props;
+    if(!text){return [];}
+    var texts = Array.isArray(text)?text.map((t)=>this.getText(t)):[this.getText(text)];
+    return texts;
+  } 
+  getText(text){
+    var {value,style = {}} = text;
+    var Style = typeof style === 'function'?style(this.props):style;
+    var {top = 20,left = 0,fontSize = 10,color = '#000',rotate = 0} = Style;
+    return {
+      text:typeof value === 'function'?value(this.props):value,x:left,y:top,rotate,fontSize,fill:color
+    }
+  }
+  getItems(){return this.getCircles().concat(this.getRanges(),this.labels,this.scales,this.getTexts(),this.getHandles())} 
+  getStyle(){
+    var Style = {...this.props.style};
+    Style.width = Style.width || '200px';
+    Style.height = Style.height || '200px';
+    return Style;
+  }
+  render(){
+    var {dynamic,position,direction,id,className} = this.props;
+    if(dynamic){this.getDetails();}
+    return (
+      <RCanvas className={`r-gauger${className?' ' + className:''}`} id={id} items={this.getItems()} style={this.getStyle()} axisPosition={position} rotateSetting={{direction:direction === 'clockwise'?'clockwise':'clock'}}/>
+    )
+  }
 }
+RGauger.defaultProps = {angle:300,offsetAngle:0,start:0,end:100,thickness:10,radius:70,label:{},scale:{},direction:'clock',position:['50%','50%']}
