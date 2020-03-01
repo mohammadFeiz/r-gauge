@@ -185,7 +185,7 @@ var RGauger = /*#__PURE__*/function (_Component) {
             _Style$color = _Style.color,
             color = _Style$color === void 0 ? '#000' : _Style$color;
 
-        var pivot = offset || -(radius - thickness / 2 - fontSize - 3);
+        var pivot = offset ? -offset : -(radius - thickness / 2 - fontSize - 3);
         var angle = this.getAngleByValue(value);
         labels.push({
           text: edit ? edit(value) : value,

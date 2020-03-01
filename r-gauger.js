@@ -55,7 +55,7 @@ export default class RGauger extends Component{
     var value = start;
     while(value <= end){
       var {fontSize = 10,offset,color = '#000'} = Style(value);
-      var pivot = offset || -(radius - thickness/2 - fontSize - 3);
+      var pivot = offset?-offset:-(radius - thickness/2 - fontSize - 3);
       var angle = this.getAngleByValue(value);
       labels.push({text:edit?edit(value):value,fill:color,pivot:[pivot,0],rotate:angle,angle:-angle,fontSize})
       value+=step;
