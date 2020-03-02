@@ -42,7 +42,7 @@ export default class RGauger extends Component{
     if(!circles || circles.length === 0){return []}
     return circles.map((c)=>{
       let {radius:r=20,color:stroke = '#555',lineWidth = 1} = c;
-      return {r:c.radius,lineWidth:c.lineWidth,stroke:c.color,slice:this.slice}
+      return {r:c.radius,lineWidth:c.lineWidth,stroke:c.color,slice:c.slice?this.slice:undefined}
     });
 
   }

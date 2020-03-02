@@ -144,7 +144,7 @@ var RGauger = /*#__PURE__*/function (_Component) {
           r: c.radius,
           lineWidth: c.lineWidth,
           stroke: c.color,
-          slice: _this3.slice
+          slice: c.slice ? _this3.slice : undefined
         };
       });
     }
