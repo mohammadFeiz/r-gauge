@@ -143,7 +143,8 @@ var RGauger = /*#__PURE__*/function (_Component) {
         return {
           r: c.radius,
           lineWidth: c.lineWidth,
-          stroke: c.color,
+          stroke: c.stroke,
+          fill: c.fill,
           slice: c.slice ? _this3.slice : undefined
         };
       });
@@ -361,7 +362,7 @@ var RGauger = /*#__PURE__*/function (_Component) {
   }, {
     key: "getItems",
     value: function getItems() {
-      return this.circles.concat(this.getRanges(), this.labels, this.scales, this.getTexts(), this.getHandles());
+      return this.props.customShapes.concat(this.circles, this.getRanges(), this.labels, this.scales, this.getTexts(), this.getHandles());
     }
   }, {
     key: "getStyle",
@@ -413,5 +414,6 @@ RGauger.defaultProps = {
   label: {},
   scale: {},
   direction: 'clock',
-  position: ['50%', '50%']
+  position: ['50%', '50%'],
+  customShapes: []
 };

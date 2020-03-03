@@ -20,6 +20,7 @@ export default class RGauger extends Component{
     var percent = this.getPercentByValue(value,start,end);
     return this.startAngle + angle / 100 * percent + offsetAngle + (direction === 'clockwise'?180:0);
   }
+  
   getRanges(){
     var {ranges = [],radius,thickness} = this.props;
     if(!thickness){return []}
@@ -42,7 +43,7 @@ export default class RGauger extends Component{
     if(!circles || circles.length === 0){return []}
     return circles.map((c)=>{
       let {radius:r=20,color:stroke = '#555',lineWidth = 1} = c;
-      return {r:c.radius,lineWidth:c.lineWidth,stroke:c.color,slice:c.slice?this.slice:undefined}
+      return {r:c.radius,lineWidth:c.lineWidth,stroke:c.stroke,fill:c.fill,slice:c.slice?this.slice:undefined}
     });
 
   }
@@ -110,7 +111,7 @@ export default class RGauger extends Component{
       text:typeof value === 'function'?value(this.props):value,x:left,y:top,rotate,fontSize,fill:color
     }
   }
-  getItems(){return this.circles.concat(this.getRanges(),this.labels,this.scales,this.getTexts(),this.getHandles())} 
+  getItems(){return this.props.customShapes.concat(this.circles,this.getRanges(),this.labels,this.scales,this.getTexts(),this.getHandles())} 
   getStyle(){
     var Style = {...this.props.style};
     Style.width = Style.width || '200px';
@@ -125,4 +126,4 @@ export default class RGauger extends Component{
     )
   }
 }
-RGauger.defaultProps = {angle:300,offsetAngle:0,start:0,end:100,thickness:10,radius:70,label:{},scale:{},direction:'clock',position:['50%','50%']}
+RGauger.defaultProps = {angle:300,offsetAngle:0,start:0,end:100,thickness:10,radius:70,label:{},scale:{},direction:'clock',position:['50%','50%'],customShapes:[]}
