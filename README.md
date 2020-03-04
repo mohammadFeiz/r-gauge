@@ -22,4 +22,4 @@ add ranges props
   ]}
 ...
 ```
-![GitHub Logo](/images/1.gif)
+![GitHub Logo](/images/1.jpg)
