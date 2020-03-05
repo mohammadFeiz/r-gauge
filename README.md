@@ -38,13 +38,13 @@ thickness | number | set thickness of ranges arc | 10
 #### Step4
 props | type | Description | default  
 ----- | ---- | ----------- | -----
-angle | number between 60 and 360 | set angle of gaguge | 220 
+angle | number between 60 and 360 | set angle of gaguge | 300 
 ``` 
 ... 
-  thickness=4
+  angle=150
 ...
 ```
-![GitHub Logo](/images/2.jpg)
+![GitHub Logo](/images/3.jpg)
 
 #### Step5
 Props | Type | Description | Default  
