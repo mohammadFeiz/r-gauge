@@ -11,8 +11,13 @@ ES5: <br>
 ```var RGauger = require('r-gauger');```
 ### Step By Step Tutorial
 
-## Step1
-```<RGauger />```
+## Step1:start and end props
+```
+<RGauger 
+  start={0}
+  end={100}
+/>
+```
 ## Step2:ranges props
 props | type | Description | default  
 ----- | ---- | ----------- | -----
