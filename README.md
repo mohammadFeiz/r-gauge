@@ -107,7 +107,7 @@ props | type | Description | Default
 ----- | ---- | ----------- | -----
 label | object | set labels of gauge | Optional 
 
-label style width object type: 
+label style with object type: 
 
 ``` 
 ... 
@@ -124,7 +124,7 @@ label:{
 
 ![GitHub Logo](/images/label.jpg)
 
-label style width function type:
+label style with function type:
 ``` 
 ... 
 label={{
@@ -159,7 +159,7 @@ props | type | Description | default
 ----- | ---- | ----------- | -----
 scale | object | set scales of gauge | Optional 
 
-scale style width object type:
+scale style with object type:
 
 ``` 
 ... 
@@ -177,7 +177,7 @@ scale={{
 
 ![GitHub Logo](/images/scale-1.jpg)
 
-scale style width function type:
+scale style with function type:
 
 ```
 ...
