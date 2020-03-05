@@ -290,5 +290,16 @@ text:[
 
 ![GitHub Logo](/images/text.jpg)
 
+## Step 11:direction props
 
+props | type | Description | default  
+----- | ---- | ----------- | -----
+direction | string | set direction of gauge('clock' or 'clockwise') | 'clock'
 
+```
+...
+direction='clockwise'
+...
+```
+
+![GitHub Logo](/images/direction.jpg)
