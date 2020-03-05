@@ -16,9 +16,9 @@ export default class RGauger extends Component{
     this.circles = this.getCircles();
   }
   getAngleByValue(value){
-    var {start,end,angle,offsetAngle,direction} = this.props;
+    var {start,end,angle,rotate,direction} = this.props;
     var percent = this.getPercentByValue(value,start,end);
-    return this.startAngle + angle / 100 * percent + offsetAngle + (direction === 'clockwise'?180:0);
+    return this.startAngle + angle / 100 * percent + rotate + (direction === 'clockwise'?180:0);
   }
   
   getRanges(){
@@ -51,7 +51,10 @@ export default class RGauger extends Component{
     var labels = [];
     var {start,end,label,radius,thickness,angle:mainAngle} = this.props;
     var {step,style = {},edit} = label;
-    var Style = typeof style === 'function'?(value)=>{style(value,this.props)}:()=>{return style;}
+    var Style = typeof style === 'function'?
+    (value)=>{
+      return style(value,this.props) 
+    }:()=>{return style;}
     if(!step){return [];}
     var value = start;
     while(value <= end){
@@ -73,8 +76,9 @@ export default class RGauger extends Component{
     var value = start;
     while(value <= end){
       var {offset = 0,color = '#000',width,height = 5} = Style(value);
+      var pivot = offset?-offset:-(radius - height - thickness / 2);
       var angle = this.getAngleByValue(value);
-      scales.push({stroke:color,points:[[0,0],[height,0]],lineWidth:width,pivot:[-(radius - height - thickness / 2 + offset),0],rotate:angle,})
+      scales.push({stroke:color,points:[[0,0],[height,0]],lineWidth:width,pivot:[pivot,0],rotate:angle,})
       value+=step;
     } 
     return scales;
@@ -126,4 +130,4 @@ export default class RGauger extends Component{
     )
   }
 }
-RGauger.defaultProps = {angle:300,offsetAngle:0,start:0,end:100,thickness:10,radius:70,label:{},scale:{},direction:'clock',position:['50%','50%'],customShapes:[]}
+RGauger.defaultProps = {angle:180,rotate:0,start:0,end:100,thickness:10,radius:70,label:{},scale:{},direction:'clock',position:['50%','50%'],customShapes:[]}
