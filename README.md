@@ -123,12 +123,15 @@ Dynamic styling scales. scale.style can be a function that receive value of curr
 scale:{
   step:5,
   style:function(value){
+    var width = value % 10 === 0?2:1;
     var height = value % 10 === 0?6:3;
     var offset = value % 10 === 0?12:10;
     return {
-      width:2,height,color:'#aaa',offset
+      width,height,offset,color:'#aaa'
     }
   }
 }
 ...
 ```
+
+![GitHub Logo](/images/8.jpg)
