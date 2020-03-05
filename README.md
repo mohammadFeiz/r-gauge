@@ -1,5 +1,7 @@
 # r-gauger
 
+![GitHub Logo](/images/demo.jpg)
+
 ### Install
 ```npm install r-gauger```
 ### Usage
