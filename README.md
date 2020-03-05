@@ -106,6 +106,7 @@ radius:88,
 props | type | Description | Default  
 ----- | ---- | ----------- | -----
 label | object | set labels of gauge | Optional 
+label style width object type: 
 
 ``` 
 ... 
@@ -122,6 +123,7 @@ label:{
 
 ![GitHub Logo](/images/label.jpg)
 
+label style width function type:
 ``` 
 ... 
 label={{
