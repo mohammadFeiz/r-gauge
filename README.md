@@ -63,11 +63,13 @@ style | object | styling labels | will calculate by component
 ...
 ```
 ![GitHub Logo](/images/4.jpg)
+
 style property | Type | Description | Default
 -------------- | ---- | ----------- | -------
 color | string | set color of labels | '#000'
 fontSize | number | set font size of labels | 10
 offset | number | set distance of labels from center | will calculate by component
+
 ``` 
 ... 
   label={{
