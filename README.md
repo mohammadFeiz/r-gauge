@@ -1,4 +1,6 @@
 # r-gauger
+#### wonderfull and powerfull Reactjs gauge width unlimit style
+all of this examples created by r-gauger
 
 ![GitHub Logo](/images/demo.jpg)
 
@@ -333,3 +335,27 @@ direction='clockwise'
 ```
 
 ![GitHub Logo](/images/direction.jpg)
+
+## Step 12:position props:
+
+props | type | Description | Default  
+----- | ---- | ----------- | -----
+position | array width 2 member(left,top) | set left and top of gauge | ['50%','50%']
+
+```
+...
+position={['50%',190]}
+...
+```
+
+## Step 13:rotate props:
+
+props | type | Description | Default  
+----- | ---- | ----------- | -----
+rotate | number between 0 and 360 | set rotation of gauge | 0
+
+```
+...
+rotate={90}
+...
+```
