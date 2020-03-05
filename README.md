@@ -12,16 +12,20 @@ ES5: <br>
 ### Step By Step Tutorial
 
 ## Step 1:start and end props
+
 ```
 <RGauger 
   start={0} //Set Start Of Gauge Range, type = number, default = 0
   end={120} //Set End Of Gauge Range, type = number, default = 100
 />
 ```
+
 ## Step 2:ranges props
+
 Prop | Description | Type | Required
 ---- | ----------- | ---- | --------
 ranges | Set Colorfull ranges of gauge | Array | Optional
+
 ```
 ...
 ranges={[
@@ -39,6 +43,8 @@ ranges={[
   }
 ]}
 ...
+```
+
 ![GitHub Logo](/images/ranges.jpg)
 
 ## Step 3:style props
