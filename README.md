@@ -48,7 +48,7 @@ ranges={[
 ![GitHub Logo](/images/1.jpg)
 
 ## Step 3:style props
-Prop | Description | Type | Required
+Prop | Description | Type | Default
 ---- | ----------- | ---- | --------
 style | Set Css style of gauge | Css Object | Optional
 ```
@@ -61,7 +61,7 @@ style={{width:200,height:200,background:"#eeeeee",border:'1px solid #ccc',border
 
 ## Step 4:angle props
 
-Prop | Description | Type | Required
+Prop | Description | Type | Default
 ---- | ----------- | ---- | --------
 angle | Set angle of gauge | number between 90 and 360 | 180
 
@@ -75,7 +75,7 @@ angle:270,
 
 ## Step 5:thickness props
 
-Prop | Description | Type | Required
+Prop | Description | Type | Default
 ---- | ----------- | ---- | --------
 thickness | Set thickness of gauge ranges | number | 10
 
@@ -89,7 +89,7 @@ thickness:4,
 
 ## Step 6:radius props
 
-Prop | Description | Type | Required
+Prop | Description | Type | Default
 ---- | ----------- | ---- | --------
 radius | Set radius of gauge ranges | number | 70
 
@@ -103,7 +103,7 @@ radius:88,
 
 ## Step 7:label props
 
-props | type | Description | default  
+props | type | Description | Default  
 ----- | ---- | ----------- | -----
 label | object | set labels of gauge | Optional 
 
@@ -124,7 +124,7 @@ label:{
 
 ## Step 8:scale props
 
-props | type | Description | default  
+props | type | Description | Default  
 ----- | ---- | ----------- | -----
 scale | object | set scales of gauge | Optional 
 
@@ -172,7 +172,7 @@ scale={{
 
 ## Step 8:circles props
 
-props | type | Description | default  
+props | type | Description | Default  
 ----- | ---- | ----------- | -----
 circles | Array Of Objects | design gauge by circles | Optional
 
@@ -199,7 +199,7 @@ circles={[
 
 ## Step 9:handle props
 
-props | type | Description | default  
+props | type | Description | Default  
 ----- | ---- | ----------- | -----
 handle | Object or Array Of Objects | Set Handles of Gauge | Optional
 
@@ -254,7 +254,7 @@ handle={[
 
 ## Step 10:text props
 
-props | type | Description | default  
+props | type | Description | Default  
 ----- | ---- | ----------- | -----
 text | Object Or Array Of Objects | Set Texts of Gauge | Optional
 
@@ -292,7 +292,7 @@ text:[
 
 ## Step 11:direction props
 
-props | type | Description | default  
+props | type | Description | Default  
 ----- | ---- | ----------- | -----
 direction | string | set direction of gauge('clock' or 'clockwise') | 'clock'
 
