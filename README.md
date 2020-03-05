@@ -157,6 +157,9 @@ scale | object | set scales of gauge | Optional
 props | type | Description | default  
 ----- | ---- | ----------- | -----
 scale | object | set scales of gauge | Optional 
+
+scale style width object type:
+
 ``` 
 ... 
 scale={{
@@ -173,7 +176,7 @@ scale={{
 
 ![GitHub Logo](/images/scale-1.jpg)
 
-set functional style of scales
+scale style width function type:
 
 ```
 ...
