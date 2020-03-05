@@ -204,6 +204,35 @@ handle:[
 ```
 ![GitHub Logo](/images/11.jpg)
 
+## Step8:text props
+
+Props | Type | Description | Default  
+----- | ---- | ----------- | -----
+text | Array Of Objects  | Use texts in gauge | 
+
+text property | Type | Description | Default  
+--------------- | ---- | ----------- | -----
+value | number or string or function | Set text of gauge |
+fontSize | number | Set font size of text | 10
+color | string | Set color of text | '#000'
+top | number | Set top of text from center | 20
+left | number | Set left of text from center | 0
+rotate | number between 0 and 360 | Set rotate angle of text | 0
+
+```
+...
+text={[
+  {
+    value:'My Gauge',
+    fontSize:20,
+    
+  }
+]}
+...
+```
+![GitHub Logo](/images/12.jpg)
+
+
 ## Step8:circles props
 
 Props | Type | Description | Default  
