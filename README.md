@@ -45,7 +45,7 @@ ranges={[
 ...
 ```
 
-![GitHub Logo](/images/ranges.jpg)
+![GitHub Logo](/images/1.jpg)
 
 ## Step 3:style props
 Prop | Description | Type | Required
