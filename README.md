@@ -11,9 +11,9 @@ ES5: <br>
 ```var RGauger = require('r-gauger');```
 ### Step By Step Tutorial
 
-#### Step1
+## Step1
 ```<RGauger />```
-#### Step2:ranges props
+## Step2:ranges props
 props | type | Description | default  
 ----- | ---- | ----------- | -----
 ranges | Array Of Objects | set ranges by value and color | 
@@ -27,7 +27,7 @@ ranges | Array Of Objects | set ranges by value and color |
 ...
 ```
 ![GitHub Logo](/images/1.jpg)
-#### Step3:thickness props
+## Step3:thickness props
 props | type | Description | default  
 ----- | ---- | ----------- | -----
 thickness | number | set thickness of ranges arc | 10 
@@ -37,7 +37,7 @@ thickness | number | set thickness of ranges arc | 10
 ...
 ```
 ![GitHub Logo](/images/2.jpg)
-#### Step4:angle props
+## Step4:angle props
 props | type | Description | default  
 ----- | ---- | ----------- | -----
 angle | number between 60 and 360 | set angle of gaguge | 300 
@@ -48,7 +48,7 @@ angle | number between 60 and 360 | set angle of gaguge | 300
 ```
 ![GitHub Logo](/images/3.jpg)
 
-#### Step5:label props
+## Step5:label props
 Props | Type | Description | Default  
 ----- | ---- | ----------- | -----
 label | Object | set labels of gauge | 
@@ -81,7 +81,7 @@ offset | number | set distance of labels from center | will calculate by compone
 ...
 ```
 ![GitHub Logo](/images/5.jpg)
-#### Step6:scale props
+## Step6:scale props
 Props | Type | Description | Default  
 ----- | ---- | ----------- | -----
 scale | Object | set scales of gauge | 
@@ -145,7 +145,7 @@ scale:{
 
 ![GitHub Logo](/images/8.jpg)
 
-#### Step7:handle props
+## Step7:handle props
 Props | Type | Description | Default  
 ----- | ---- | ----------- | -----
 handle | Object Or Array Of Objects  | set handles of gauge | 
@@ -199,7 +199,7 @@ handle:[
 ```
 ![GitHub Logo](/images/11.jpg)
 
-#### Step8:circles props
+## Step8:circles props
 
 Props | Type | Description | Default  
 ----- | ---- | ----------- | -----
@@ -222,7 +222,7 @@ circles:[
 ```
 ![GitHub Logo](/images/12.jpg)
 
-#### Step9:style props
+## Step9:style props
 
 Props | Type | Description | Default  
 ----- | ---- | ----------- | -----
@@ -237,7 +237,7 @@ style:{
 ```
 ![GitHub Logo](/images/13.jpg)
 
-#### Step10:position props
+## Step10:position props
 
 Props | Type | Description | Default  
 ----- | ---- | ----------- | -----
@@ -252,7 +252,7 @@ in this props we set top of gauge to center of container(130)
 
 ![GitHub Logo](/images/14.jpg)
 
-#### Step11:offsetAngle props
+## Step11:offsetAngle props
 
 Props | Type | Description | Default  
 ----- | ---- | ----------- | -----
