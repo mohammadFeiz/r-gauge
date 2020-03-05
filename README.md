@@ -142,3 +142,57 @@ scale:{
 ```
 
 ![GitHub Logo](/images/8.jpg)
+
+#### Step7:handle props
+Props | Type | Description | Default  
+----- | ---- | ----------- | -----
+handle | Object Or Array Of Objects  | set handles of gauge | 
+
+hanle property | Type | Description | Default
+-------------- | ---- | ----------- | -------
+value | number | Value Of Handle | Required
+style | object | styling handle | will calculate by component
+``` 
+... 
+  handle={{
+    value:30,
+  }}
+...
+```
+![GitHub Logo](/images/9.jpg)
+
+style property | Type | Description | Default
+-------------- | ---- | ----------- | -------
+color | string | set color of handle | '#000'
+width | number | set width of handle | 4
+height | number | set height of handle | will calculate by component
+offset | number | set distance of handle from center | will calculate by component
+radius | number | set radius of handle circle | 4
+
+``` 
+... 
+  handle:{
+    value:30,
+    style:{color:'#555',width:8,height:60,radius:8}
+  }
+...
+```
+![GitHub Logo](/images/10.jpg)
+
+use multi handle
+```
+...
+handle:[
+  {
+    value:30,
+    style:{color:'#555',width:12,height:60,radius:10}
+  },
+  {
+    value:60,
+    style:{color:'red',width:16,height:10,radius:0,offset:57}
+  },
+]
+...
+```
+![GitHub Logo](/images/11.jpg)
+
