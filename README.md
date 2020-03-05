@@ -22,7 +22,7 @@ ES5: <br>
 
 ## Step 2:ranges props
 
-Prop | Description | Type | Required
+Prop | Description | Type | Default
 ---- | ----------- | ---- | --------
 ranges | Set Colorfull ranges of gauge | Array | Optional
 
