@@ -56,43 +56,57 @@ style | Set Css style of gauge | Css Object | Optional
 style={{width:200,height:200,background:"#eeeeee",border:'1px solid #ccc',borderRadius:'5px'}}
 ...
 ```
+
 ![GitHub Logo](/images/style.jpg)
+
 ## Step 4:angle props
+
 Prop | Description | Type | Required
 ---- | ----------- | ---- | --------
 angle | Set angle of gauge | number between 90 and 360 | 180
+
 ```
 ...
 angle:270,
 ...
 ```
+
 ![GitHub Logo](/images/angle.jpg)
+
 ## Step 5:thickness props
+
 Prop | Description | Type | Required
 ---- | ----------- | ---- | --------
 thickness | Set thickness of gauge ranges | number | 10
+
 ```
 ...
 thickness:4,
 ...
 ```
+
 ![GitHub Logo](/images/thickness.jpg)
+
 ## Step 6:radius props
+
 Prop | Description | Type | Required
 ---- | ----------- | ---- | --------
 radius | Set radius of gauge ranges | number | 70
+
 ```
 ...
 radius:88,
 ...
 ```
+
 ![GitHub Logo](/images/radius.jpg)
 
-
 ## Step 7:label props
+
 props | type | Description | default  
 ----- | ---- | ----------- | -----
 label | object | set labels of gauge | Optional 
+
 ``` 
 ... 
 label:{
@@ -105,14 +119,15 @@ label:{
 },
 ...
 ```
+
 ![GitHub Logo](/images/label.jpg)
+
 ## Step 8:scale props
+
 props | type | Description | default  
 ----- | ---- | ----------- | -----
 scale | object | set scales of gauge | Optional 
-``` 
-... 
-## Step 7:scale props
+
 props | type | Description | default  
 ----- | ---- | ----------- | -----
 scale | object | set scales of gauge | Optional 
@@ -129,9 +144,11 @@ scale={{
 }}
 ...
 ```
+
 ![GitHub Logo](/images/scale-1.jpg)
 
 set functional style of scales
+
 ```
 ...
 scale={{
@@ -150,11 +167,15 @@ scale={{
 }}
 ...
 ```
+
 ![GitHub Logo](/images/scale-2.jpg)
+
 ## Step 8:circles props
+
 props | type | Description | default  
 ----- | ---- | ----------- | -----
 circles | Array Of Objects | design gauge by circles | Optional
+
 ```
 ...
 circles={[
@@ -173,11 +194,15 @@ circles={[
 ]}
 ...
 ```
+
 ![GitHub Logo](/images/circles.jpg)
+
 ## Step 9:handle props
+
 props | type | Description | default  
 ----- | ---- | ----------- | -----
 handle | Object or Array Of Objects | Set Handles of Gauge | Optional
+
 Set one handle (Object)
 ```
 ...
@@ -193,8 +218,11 @@ handle={{
 }}
 ...
 ```
+
 ![GitHub Logo](/images/handle-1.jpg)
+
 Set 2 handles (Array Of Objects)
+
 ```
 ...
 handle={[
@@ -221,13 +249,17 @@ handle={[
 ]}
 ...
 ```
+
 ![GitHub Logo](/images/handle-2.jpg)
 
 ## Step 10:text props
+
 props | type | Description | default  
 ----- | ---- | ----------- | -----
 text | Object Or Array Of Objects | Set Texts of Gauge | Optional
+
 Set 2 text
+
 ```
 ...
 text:[
@@ -255,6 +287,7 @@ text:[
 ],
 ...
 ```
+
 ![GitHub Logo](/images/text.jpg)
 
 
