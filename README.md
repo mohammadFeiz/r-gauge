@@ -55,21 +55,25 @@ label property | Type | Description | Default
 -------------- | ---- | ----------- | -------
 step | number | spece between each 2 labels | Required
 style | object | styling labels | will calculate by component
-
+``` 
+... 
+  label={{
+    step:10,
+  }}
+...
+```
+![GitHub Logo](/images/4.jpg)
 style property | Type | Description | Default
 -------------- | ---- | ----------- | -------
 color | string | set color of labels | '#000'
 fontSize | number | set font size of labels | 10
 offset | number | set distance of labels from center | will calculate by component
-
-
 ``` 
 ... 
   label={{
-    step:10,
-    style:{
-    }
+    step:20,
+    style:{fontSize:12,color:'#aaa',offset:90}
   }}
 ...
 ```
-![GitHub Logo](/images/2.jpg)
+![GitHub Logo](/images/5.jpg)
