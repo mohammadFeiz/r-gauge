@@ -314,7 +314,8 @@ text:[
       top:24,
       left:0,
       color:"#000000",
-      rotate:0}
+      rotate:0
+     }
   },
 ],
 ...
