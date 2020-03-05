@@ -160,14 +160,15 @@ style | object | styling handle | will calculate by component
 ...
 ```
 ![GitHub Logo](/images/9.jpg)
+Styling Handle
 
 style property | Type | Description | Default
 -------------- | ---- | ----------- | -------
-color | string | set color of handle | '#000'
-width | number | set width of handle | 4
-height | number | set height of handle | will calculate by component
-offset | number | set distance of handle from center | will calculate by component
-radius | number | set radius of handle circle | 4
+color | string | Set color of handle | '#000'
+width | number | Set width of handle | 4
+height | number | Set height of handle | Will calculate by component
+offset | number | Set distance of handle from center | will calculate by component
+radius | number | Set radius of handle circle | 4
 
 ``` 
 ... 
@@ -196,3 +197,25 @@ handle:[
 ```
 ![GitHub Logo](/images/11.jpg)
 
+#### Step8:circles props
+
+Props | Type | Description | Default  
+----- | ---- | ----------- | -----
+circles | Array Of Objects  | Use circles for design gauge | 
+
+circle property | Type | Description | Default  
+--------------- | ---- | ----------- | -----
+radius | number | Set radius of circle |
+stroke | string | Set stroke color of circle |
+fill | string | Set fill color of circle |
+slice | boolean | Set slicing circle or not | false
+
+```
+...
+circles:[
+  {radius:99,stroke:'#aaa',slice:true},
+  {radius:30,fill:'#ccc',slice:false},        
+]
+...
+```
+![GitHub Logo](/images/12.jpg)
