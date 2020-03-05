@@ -219,3 +219,45 @@ circles:[
 ...
 ```
 ![GitHub Logo](/images/12.jpg)
+
+#### Step9:style props
+
+Props | Type | Description | Default  
+----- | ---- | ----------- | -----
+style | Css Objects  | Set style of gauge | 
+
+```
+...
+style:{
+  border:'1px solid',borderRadius:'8px',background:'#eee',width:'230px'
+}
+...
+```
+![GitHub Logo](/images/13.jpg)
+
+#### Step10:position props
+
+Props | Type | Description | Default  
+----- | ---- | ----------- | -----
+position | Array  | Set position(top and left) of gauge | ['50%','50%'] 
+
+```
+...
+position:['50%',130]
+...
+```
+in this props we set top of gauge to center of container(130) 
+![GitHub Logo](/images/14.jpg)
+
+#### Step11:offsetAngle props
+
+Props | Type | Description | Default  
+----- | ---- | ----------- | -----
+offsetAngle | number between 0 and 360  | Use for rotate gauge | 0 
+
+```
+...
+offsetAngle={45}
+...
+```
+![GitHub Logo](/images/15.jpg)
