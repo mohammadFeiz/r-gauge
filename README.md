@@ -120,14 +120,21 @@ Dynamic styling scales. scale.style can be a function that receive value of curr
 
 ```
 ...
-scale:{
+scale:{ 
   step:5,
-  style:function(value){
+  style:function(value,props){
     var width = value % 10 === 0?2:1;
     var height = value % 10 === 0?6:3;
     var offset = value % 10 === 0?12:10;
+    var color;
+    for(var i = 0; i < props.ranges.length; i++){
+      if(value <= props.ranges[i].value){
+        color = props.ranges[i].color;
+        break;
+      }
+    }
     return {
-      width,height,offset,color:'#aaa'
+      width,height,offset,color
     }
   }
 }
