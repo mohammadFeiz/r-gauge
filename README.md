@@ -111,7 +111,7 @@ label | object | set labels of gauge | Optional
 ... 
 label:{
   step:20, //distance between each 2 labels, type=number
-  style:{ //styling labels, type=object
+  style:{ //styling labels, type=object or function(here use object)
     color:"#909090", //color of labels, type=string
     fontSize:8, //font size of labels, type=number 
     offset:61 //distance of labels from center, type=number
@@ -121,6 +121,30 @@ label:{
 ```
 
 ![GitHub Logo](/images/label.jpg)
+
+``` 
+... 
+label={{
+  step:20,
+  style:function(value,props){ //use functional style, parameters = (value : value of label, props : all gauge props)
+    var color;
+    for(var i = 0; i < props.ranges.length; i++){
+      if(value <= props.ranges[i].value){
+        color = props.ranges[i].color;
+        break;
+      }
+    }
+    return {
+      color,
+      fontSize:8,
+      offset:61
+    }
+  }
+}}
+...
+```
+
+![GitHub Logo](/images/label-2.jpg)
 
 ## Step 8:scale props
 
