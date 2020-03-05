@@ -247,6 +247,7 @@ position:['50%',130]
 ...
 ```
 in this props we set top of gauge to center of container(130) 
+
 ![GitHub Logo](/images/14.jpg)
 
 #### Step11:offsetAngle props
