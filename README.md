@@ -162,7 +162,7 @@ scale | object | set scales of gauge | Optional
 
 scale style with object type:
 
-``` 
+```javascript
 ... 
 scale={{
   step:5, //distance between each 2 scales, type=number
@@ -203,11 +203,11 @@ scale={{
 
 ## Step8 : circles props
 
-props | type | Description | Default  
------ | ---- | ----------- | -----
-circles | Array Of Objects | design gauge by circles | Optional
+Prop   | type             | Default     | Description  
+------- | ---------------- | ----------- | -----
+circles | Array Of Objects | Optional    | design gauge by circles
 
-```
+```javascript
 ...
 circles={[
   {
@@ -230,12 +230,12 @@ circles={[
 
 ## Step9 : handle props
 
-props | type | Description | Default  
------ | ---- | ----------- | -----
-handle | Object or Array Of Objects | Set Handles of Gauge | Optional
+Prop   | type                       | Default  | Description  
+------ | -------------------------- | -------- | --------------------
+handle | Object or Array Of Objects | Optional | Set Handles of Gauge
 
 Set one handle (Object)
-```
+```javascript
 ...
 handle={{
   value:30, //value of handle, type=number, required
@@ -254,7 +254,7 @@ handle={{
 
 Set 2 handles (Array Of Objects)
 
-```
+```javascript
 ...
 handle={[
   {
@@ -285,13 +285,13 @@ handle={[
 
 ## Step10 : text props
 
-props | type | Description | Default  
------ | ---- | ----------- | -----
-text | Object Or Array Of Objects | Set Texts of Gauge | Optional
+Prop | type                       | Default  | Description   
+---- | -------------------------- | -------- | ------------------
+text | Object Or Array Of Objects | Optional | Set Texts of Gauge 
 
 Set 2 text
 
-```
+```javascript
 ...
 text:[
   {
@@ -324,11 +324,11 @@ text:[
 
 ## Step11 : direction props
 
-props | type | Description | Default  
------ | ---- | ----------- | -----
-direction | string | set direction of gauge('clock' or 'clockwise') | 'clock'
+Prop      | type   | Default | Description  
+--------- | ------ | ------- | -----------------------------------------------
+direction | string | "clock" | set direction of gauge('clock' or 'clockwise') 
 
-```
+```javascript
 ...
 direction='clockwise'
 ...
@@ -338,11 +338,11 @@ direction='clockwise'
 
 ## Step12 : position props
 
-props | type | Description | Default  
------ | ---- | ----------- | -----
-position | array width 2 member(left,top) | set left and top of gauge | ['50%','50%']
+Prop     | type                           | Default       | Description  
+-------- | ------------------------------ | ------------- | ------------------------------------------
+position | array width 2 member(left,top) | ['50%','50%'] | set left and top of gauge in its container
 
-```
+```javascript
 ...
 position={['50%',190]}
 ...
@@ -350,11 +350,11 @@ position={['50%',190]}
 
 ## Step13 : rotate props
 
-props | type | Description | Default  
------ | ---- | ----------- | -----
-rotate | number between 0 and 360 | set rotation of gauge | 0
+Prop   | type                     | Default | Description  
+------ | ------------------------ | ------  | ---------------------
+rotate | number between 0 and 360 | 0       | set rotation of gauge    
 
-```
+```javascript
 ...
 rotate={90}
 ...
