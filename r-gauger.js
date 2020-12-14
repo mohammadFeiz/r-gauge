@@ -61,7 +61,13 @@ export default class RGauger extends Component{
       var {fontSize = 10,offset,color = '#000'} = Style(value);
       var pivot = offset?-offset:-(radius - thickness/2 - fontSize - 3);
       var angle = this.getAngleByValue(value);
-      labels.push({text:edit?edit(value):value,fill:color,pivot:[pivot,0],rotate:angle,angle:-angle,fontSize})
+      labels.push({
+        rotate:angle,pivot:[pivot,0],
+        items:[
+          {text:edit?edit(value):value,fill:color,rotate:-angle,fontSize}
+        ]
+        
+      })
       value+=step;
     } 
     if(mainAngle === 360 && labels[labels.length - 1].rotate % 90 === 0){labels.pop();}
