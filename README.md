@@ -82,9 +82,9 @@ Prop | Description | Type | Default
 ---- | ----------- | ---- | --------
 thickness | Set thickness of gauge ranges | number | 10
 
-```
+```javascript
 ...
-thickness:4,
+thickness={4}
 ...
 ```
 
@@ -92,13 +92,13 @@ thickness:4,
 
 ## Step6 : radius props
 
-Prop | Description | Type | Default
----- | ----------- | ---- | --------
-radius | Set radius of gauge ranges | number | 70
+Prop   | Type   | Default | Description 
+------ | ------ | ------- | --------
+radius | number | 70      | Set radius of gauge ranges
 
-```
+```javascript
 ...
-radius:88,
+radius={88}
 ...
 ```
 
@@ -106,22 +106,24 @@ radius:88,
 
 ## Step7 : label props
 
-props | type | Description | Default  
------ | ---- | ----------- | -----
-label | object | set labels of gauge | Optional 
+Prop  | type   | Default  | Description  
+----- | ------ | -------- | -----------
+label | object | Optional | set labels of gauge 
 
 label style with object type: 
 
-``` 
+```javascript
 ... 
-label:{
-  step:20, //distance between each 2 labels, type=number
-  style:{ //styling labels, type=object or function(here use object)
-    color:"#909090", //color of labels, type=string
-    fontSize:8, //font size of labels, type=number 
-    offset:61 //distance of labels from center, type=number
+label={
+  {
+    step:20, //diffrence of each 2 labels, type=number
+    style:{ //styling labels, type=object or function(here use object)
+      color:"#909090", //color of labels, type=string
+      fontSize:8, //font size of labels, type=number 
+      offset:61 //distance of labels from center, type=number
+    }
   }
-},
+}
 ...
 ```
 
