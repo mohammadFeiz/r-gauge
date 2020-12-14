@@ -130,7 +130,7 @@ label={
 ![GitHub Logo](/images/label.jpg)
 
 label style with function type:
-``` 
+```javascript
 ... 
 label={{
   step:20,
@@ -160,10 +160,6 @@ props | type | Description | Default
 ----- | ---- | ----------- | -----
 scale | object | set scales of gauge | Optional 
 
-props | type | Description | default  
------ | ---- | ----------- | -----
-scale | object | set scales of gauge | Optional 
-
 scale style with object type:
 
 ``` 
@@ -184,7 +180,7 @@ scale={{
 
 scale style with function type:
 
-```
+```javascript
 ...
 scale={{
   step:5,
