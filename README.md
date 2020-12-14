@@ -8,9 +8,9 @@ all of this examples created by r-gauger
 ```npm install r-gauger```
 ### Usage
 ES6: <br>
-```import RGauger from 'r-gauger;'``` <br>
+```import Gauge from 'r-gauger;'``` <br>
 ES5: <br>
-```var RGauger = require('r-gauger');```
+```var Gauge = require('r-gauger');```
 ### Step By Step Tutorial
 
 ## Step1 : start and end props
@@ -20,7 +20,7 @@ start | number | 0       | Set Start Of Gauge Range
 end   | number | 100     | Set End Of Gauge Range
 
 ```javascript
-<RGauger 
+<Gauge 
   start={0}
   end={120}
 />
