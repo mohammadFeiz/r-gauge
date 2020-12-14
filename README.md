@@ -13,7 +13,7 @@ ES5: <br>
 ```var Gauge = require('r-gauger');```
 ### Step By Step Tutorial
 
-## Step1 : start and end props
+## Step1 : start and end prop
 Prop  | Type   | Default | Description
 ----- | ------ | ------- | -----------
 start | number | 0       | Set Start Of Gauge Range
@@ -26,7 +26,7 @@ end   | number | 100     | Set End Of Gauge Range
 />
 ```
 
-## Step2 : ranges props
+## Step2 : ranges prop
 
 Prop   | Type             | Default  | Description 
 ------ | ---------------- | -------- | --------
@@ -50,7 +50,7 @@ ranges={[
 
 ![GitHub Logo](/images/1.jpg)
 
-## Step3 : style props
+## Step3 : style prop
 Prop | Description | Type | Default
 ---- | ----------- | ---- | --------
 style | Set Css style of gauge | Css Object | Optional
@@ -62,7 +62,7 @@ style={{width:200,height:200,background:"#eeeeee",border:'1px solid #ccc',border
 
 ![GitHub Logo](/images/style.jpg)
 
-## Step4 : angle props
+## Step4 : angle prop
 
 Prop  | Description        | Type                      | Default
 ----- | ------------------ | ------------------------- | --------
@@ -90,7 +90,7 @@ thickness={4}
 
 ![GitHub Logo](/images/thickness.jpg)
 
-## Step6 : radius props
+## Step6 : radius prop
 
 Prop   | Type   | Default | Description 
 ------ | ------ | ------- | --------
@@ -104,7 +104,7 @@ radius={88}
 
 ![GitHub Logo](/images/radius.jpg)
 
-## Step7 : label props
+## Step7 : label prop
 
 Prop  | type   | Default  | Description  
 ----- | ------ | -------- | -----------
@@ -154,7 +154,7 @@ label={{
 
 ![GitHub Logo](/images/label-2.jpg)
 
-## Step8 : scale props
+## Step8 : scale prop
 
 props | type | Description | Default  
 ----- | ---- | ----------- | -----
@@ -201,7 +201,7 @@ scale={{
 
 ![GitHub Logo](/images/scale-2.jpg)
 
-## Step8 : circles props
+## Step8 : circles prop
 
 Prop   | type             | Default     | Description  
 ------- | ---------------- | ----------- | -----
@@ -228,7 +228,7 @@ circles={[
 
 ![GitHub Logo](/images/circles.jpg)
 
-## Step9 : handle props
+## Step9 : handle prop
 
 Prop   | type                       | Default  | Description  
 ------ | -------------------------- | -------- | --------------------
@@ -283,7 +283,7 @@ handle={[
 
 ![GitHub Logo](/images/handle-2.jpg)
 
-## Step10 : text props
+## Step10 : text prop
 
 Prop | type                       | Default  | Description   
 ---- | -------------------------- | -------- | ------------------
@@ -322,7 +322,7 @@ text:[
 
 ![GitHub Logo](/images/text.jpg)
 
-## Step11 : direction props
+## Step11 : direction prop
 
 Prop      | type   | Default | Description  
 --------- | ------ | ------- | -----------------------------------------------
@@ -336,7 +336,7 @@ direction='clockwise'
 
 ![GitHub Logo](/images/direction.jpg)
 
-## Step12 : position props
+## Step12 : position prop
 
 Prop     | type                           | Default       | Description  
 -------- | ------------------------------ | ------------- | ------------------------------------------
@@ -348,7 +348,7 @@ position={['50%',190]}
 ...
 ```
 
-## Step13 : rotate props
+## Step13 : rotate prop
 
 Prop   | type                     | Default | Description  
 ------ | ------------------------ | ------  | ---------------------
