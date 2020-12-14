@@ -8,48 +8,49 @@ all of this examples created by r-gauger
 ```npm install r-gauger```
 ### Usage
 ES6: <br>
-```import RGauger from 'r-gauger;'``` <br>
+```import Gauge from 'r-gauger;'``` <br>
 ES5: <br>
-```var RGauger = require('r-gauger');```
+```var Gauge = require('r-gauger');```
 ### Step By Step Tutorial
 
-## Step1 : start and end props
+## Step1 : start and end prop
+Prop  | Type   | Default | Description
+----- | ------ | ------- | -----------
+start | number | 0       | Set Start Of Gauge Range
+end   | number | 100     | Set End Of Gauge Range
 
-```
-<RGauger 
-  start={0} //Set Start Of Gauge Range, type = number, default = 0
-  end={120} //Set End Of Gauge Range, type = number, default = 100
+```javascript
+<Gauge 
+  start={0}
+  end={120}
 />
 ```
 
-## Step2 : ranges props
+## Step2 : ranges prop
 
-Prop | Description | Type | Default
----- | ----------- | ---- | --------
-ranges | Set Colorfull ranges of gauge | Array | Optional
+Prop   | Type             | Default  | Description 
+------ | ---------------- | -------- | --------
+ranges | Array of objects | Optional | Set Colorfull ranges of gauge 
 
-```
+##### each object properties
+Property | Type             | Default  | Description 
+-------- | ---------------- | -------- | --------
+value    | number           | Required | end value of range
+color    | string(color)    | "#000"   | color of range
+
+```javascript
 ...
 ranges={[
-  {
-    value:70, //end value of range, type=number, required 
-    color:"#13e1f9" //color of range, type=string, default='#000'
-  },
-  {
-    value:110,
-    color:"#ff090f"
-  },
-  {
-    value:120,
-    color:"#f5c125"
-  }
+  {value:70,color:"#13e1f9"},
+  {value:110,color:"#ff090f"},
+  {value:120,color:"#f5c125"}
 ]}
 ...
 ```
 
 ![GitHub Logo](/images/1.jpg)
 
-## Step3 : style props
+## Step3 : style prop
 Prop | Description | Type | Default
 ---- | ----------- | ---- | --------
 style | Set Css style of gauge | Css Object | Optional
@@ -61,15 +62,15 @@ style={{width:200,height:200,background:"#eeeeee",border:'1px solid #ccc',border
 
 ![GitHub Logo](/images/style.jpg)
 
-## Step4 : angle props
+## Step4 : angle prop
 
-Prop | Description | Type | Default
----- | ----------- | ---- | --------
+Prop  | Description        | Type                      | Default
+----- | ------------------ | ------------------------- | --------
 angle | Set angle of gauge | number between 90 and 360 | 180
 
-```
+```javascript
 ...
-angle:270,
+angle={270}
 ...
 ```
 
@@ -81,53 +82,55 @@ Prop | Description | Type | Default
 ---- | ----------- | ---- | --------
 thickness | Set thickness of gauge ranges | number | 10
 
-```
+```javascript
 ...
-thickness:4,
+thickness={4}
 ...
 ```
 
 ![GitHub Logo](/images/thickness.jpg)
 
-## Step6 : radius props
+## Step6 : radius prop
 
-Prop | Description | Type | Default
----- | ----------- | ---- | --------
-radius | Set radius of gauge ranges | number | 70
+Prop   | Type   | Default | Description 
+------ | ------ | ------- | --------
+radius | number | 70      | Set radius of gauge ranges
 
-```
+```javascript
 ...
-radius:88,
+radius={88}
 ...
 ```
 
 ![GitHub Logo](/images/radius.jpg)
 
-## Step7 : label props
+## Step7 : label prop
 
-props | type | Description | Default  
------ | ---- | ----------- | -----
-label | object | set labels of gauge | Optional 
+Prop  | type   | Default  | Description  
+----- | ------ | -------- | -----------
+label | object | Optional | set labels of gauge 
 
 label style with object type: 
 
-``` 
+```javascript
 ... 
-label:{
-  step:20, //distance between each 2 labels, type=number
-  style:{ //styling labels, type=object or function(here use object)
-    color:"#909090", //color of labels, type=string
-    fontSize:8, //font size of labels, type=number 
-    offset:61 //distance of labels from center, type=number
+label={
+  {
+    step:20, //diffrence of each 2 labels, type=number
+    style:{ //styling labels, type=object or function(here use object)
+      color:"#909090", //color of labels, type=string
+      fontSize:8, //font size of labels, type=number 
+      offset:61 //distance of labels from center, type=number
+    }
   }
-},
+}
 ...
 ```
 
 ![GitHub Logo](/images/label.jpg)
 
 label style with function type:
-``` 
+```javascript
 ... 
 label={{
   step:20,
@@ -151,19 +154,15 @@ label={{
 
 ![GitHub Logo](/images/label-2.jpg)
 
-## Step8 : scale props
+## Step8 : scale prop
 
 props | type | Description | Default  
 ----- | ---- | ----------- | -----
 scale | object | set scales of gauge | Optional 
 
-props | type | Description | default  
------ | ---- | ----------- | -----
-scale | object | set scales of gauge | Optional 
-
 scale style with object type:
 
-``` 
+```javascript
 ... 
 scale={{
   step:5, //distance between each 2 scales, type=number
@@ -181,7 +180,7 @@ scale={{
 
 scale style with function type:
 
-```
+```javascript
 ...
 scale={{
   step:5,
@@ -202,13 +201,13 @@ scale={{
 
 ![GitHub Logo](/images/scale-2.jpg)
 
-## Step8 : circles props
+## Step8 : circles prop
 
-props | type | Description | Default  
------ | ---- | ----------- | -----
-circles | Array Of Objects | design gauge by circles | Optional
+Prop   | type             | Default     | Description  
+------- | ---------------- | ----------- | -----
+circles | Array Of Objects | Optional    | design gauge by circles
 
-```
+```javascript
 ...
 circles={[
   {
@@ -229,14 +228,14 @@ circles={[
 
 ![GitHub Logo](/images/circles.jpg)
 
-## Step9 : handle props
+## Step9 : handle prop
 
-props | type | Description | Default  
------ | ---- | ----------- | -----
-handle | Object or Array Of Objects | Set Handles of Gauge | Optional
+Prop   | type                       | Default  | Description  
+------ | -------------------------- | -------- | --------------------
+handle | Object or Array Of Objects | Optional | Set Handles of Gauge
 
 Set one handle (Object)
-```
+```javascript
 ...
 handle={{
   value:30, //value of handle, type=number, required
@@ -255,7 +254,7 @@ handle={{
 
 Set 2 handles (Array Of Objects)
 
-```
+```javascript
 ...
 handle={[
   {
@@ -284,15 +283,15 @@ handle={[
 
 ![GitHub Logo](/images/handle-2.jpg)
 
-## Step10 : text props
+## Step10 : text prop
 
-props | type | Description | Default  
------ | ---- | ----------- | -----
-text | Object Or Array Of Objects | Set Texts of Gauge | Optional
+Prop | type                       | Default  | Description   
+---- | -------------------------- | -------- | ------------------
+text | Object Or Array Of Objects | Optional | Set Texts of Gauge 
 
 Set 2 text
 
-```
+```javascript
 ...
 text:[
   {
@@ -323,13 +322,13 @@ text:[
 
 ![GitHub Logo](/images/text.jpg)
 
-## Step11 : direction props
+## Step11 : direction prop
 
-props | type | Description | Default  
------ | ---- | ----------- | -----
-direction | string | set direction of gauge('clock' or 'clockwise') | 'clock'
+Prop      | type   | Default | Description  
+--------- | ------ | ------- | -----------------------------------------------
+direction | string | "clock" | set direction of gauge('clock' or 'clockwise') 
 
-```
+```javascript
 ...
 direction='clockwise'
 ...
@@ -337,25 +336,25 @@ direction='clockwise'
 
 ![GitHub Logo](/images/direction.jpg)
 
-## Step12 : position props
+## Step12 : position prop
 
-props | type | Description | Default  
------ | ---- | ----------- | -----
-position | array width 2 member(left,top) | set left and top of gauge | ['50%','50%']
+Prop     | type                           | Default       | Description  
+-------- | ------------------------------ | ------------- | ------------------------------------------
+position | array width 2 member(left,top) | ['50%','50%'] | set left and top of gauge in its container
 
-```
+```javascript
 ...
 position={['50%',190]}
 ...
 ```
 
-## Step13 : rotate props
+## Step13 : rotate prop
 
-props | type | Description | Default  
------ | ---- | ----------- | -----
-rotate | number between 0 and 360 | set rotation of gauge | 0
+Prop   | type                     | Default | Description  
+------ | ------------------------ | ------  | ---------------------
+rotate | number between 0 and 360 | 0       | set rotation of gauge    
 
-```
+```javascript
 ...
 rotate={90}
 ...
