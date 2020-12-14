@@ -17,9 +17,9 @@ ES5: <br>
 Prop  | Type   | Default 
 ----- | ------ | -------
 start | number | 0
-end   | number | 0
+end   | number | 100
 
-javascript```
+```javascript
 <RGauger 
   start={0} //Set Start Of Gauge Range, type = number, default = 0
   end={120} //Set End Of Gauge Range, type = number, default = 100
