@@ -64,13 +64,13 @@ style={{width:200,height:200,background:"#eeeeee",border:'1px solid #ccc',border
 
 ## Step4 : angle props
 
-Prop | Description | Type | Default
----- | ----------- | ---- | --------
+Prop  | Description        | Type                      | Default
+----- | ------------------ | ------------------------- | --------
 angle | Set angle of gauge | number between 90 and 360 | 180
 
-```
+```javascript
 ...
-angle:270,
+angle={270}
 ...
 ```
 
