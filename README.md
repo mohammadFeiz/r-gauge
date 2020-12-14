@@ -14,8 +14,12 @@ ES5: <br>
 ### Step By Step Tutorial
 
 ## Step1 : start and end props
+Prop  | Type   | Default 
+----- | ------ | -------
+start | number | 0
+end   | number | 0
 
-```
+javascript```
 <RGauger 
   start={0} //Set Start Of Gauge Range, type = number, default = 0
   end={120} //Set End Of Gauge Range, type = number, default = 100
