@@ -14,39 +14,36 @@ ES5: <br>
 ### Step By Step Tutorial
 
 ## Step1 : start and end props
-Prop  | Type   | Default 
------ | ------ | -------
-start | number | 0
-end   | number | 100
+Prop  | Type   | Default | Description
+----- | ------ | ------- | -----------
+start | number | 0       | Set Start Of Gauge Range
+end   | number | 100     | Set End Of Gauge Range
 
 ```javascript
 <RGauger 
-  start={0} //Set Start Of Gauge Range, type = number, default = 0
-  end={120} //Set End Of Gauge Range, type = number, default = 100
+  start={0}
+  end={120}
 />
 ```
 
 ## Step2 : ranges props
 
-Prop | Description | Type | Default
----- | ----------- | ---- | --------
-ranges | Set Colorfull ranges of gauge | Array | Optional
+Prop   | Type             | Default  | Description 
+------ | ---------------- | -------- | --------
+ranges | Array of objects | Optional | Set Colorfull ranges of gauge 
 
-```
+##### each object properties
+Property | Type             | Default  | Description 
+-------- | ---------------- | -------- | --------
+value    | number           | Required | end value of range
+color    | string(color)    | "#000"   | color of range
+
+```javascript
 ...
 ranges={[
-  {
-    value:70, //end value of range, type=number, required 
-    color:"#13e1f9" //color of range, type=string, default='#000'
-  },
-  {
-    value:110,
-    color:"#ff090f"
-  },
-  {
-    value:120,
-    color:"#f5c125"
-  }
+  {value:70,color:"#13e1f9"},
+  {value:110,color:"#ff090f"},
+  {value:120,color:"#f5c125"}
 ]}
 ...
 ```
