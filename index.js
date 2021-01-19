@@ -67,24 +67,30 @@ var RGauger = /*#__PURE__*/function (_Component) {
       var _this$props = this.props,
           angle = _this$props.angle,
           start = _this$props.start,
-          end = _this$props.end;
-      this.startAngle = 270 - angle / 2;
+          end = _this$props.end,
+          direction = _this$props.direction;
       this.scales = this.getScales();
       this.labels = this.getLabels();
-      this.slice = [this.getAngleByValue(start), this.getAngleByValue(end)];
+      this.slice = direction === 'clock' ? [this.getAngleByValue(end), this.getAngleByValue(start)] : [this.getAngleByValue(start), this.getAngleByValue(end)];
       this.circles = this.getCircles();
     }
   }, {
     key: "getAngleByValue",
     value: function getAngleByValue(value) {
       var _this$props2 = this.props,
+          direction = _this$props2.direction,
           start = _this$props2.start,
           end = _this$props2.end,
           angle = _this$props2.angle,
-          rotate = _this$props2.rotate,
-          direction = _this$props2.direction;
+          rotate = _this$props2.rotate;
       var percent = this.getPercentByValue(value, start, end);
-      return this.startAngle + angle / 100 * percent + rotate + (direction === 'clockwise' ? 180 : 0);
+      var valueAngle = angle / 100 * percent;
+
+      if (direction === 'clock') {
+        return 90 + angle / 2 - valueAngle + rotate;
+      }
+
+      return 90 - angle / 2 + valueAngle + rotate;
     }
   }, {
     key: "getRanges",
@@ -92,6 +98,7 @@ var RGauger = /*#__PURE__*/function (_Component) {
       var _this2 = this;
 
       var _this$props3 = this.props,
+          direction = _this$props3.direction,
           _this$props3$ranges = _this$props3.ranges,
           ranges = _this$props3$ranges === void 0 ? [] : _this$props3$ranges,
           radius = _this$props3.radius,
@@ -101,10 +108,15 @@ var RGauger = /*#__PURE__*/function (_Component) {
         return [];
       }
 
-      var Ranges = (typeof ranges === 'function' ? ranges(this.props) : ranges).map(function (r) {
+      var Ranges = (typeof ranges === 'function' ? ranges(this.props) : ranges).map(function (r, i) {
         var value = r.value,
             color = r.color;
         value = parseFloat(value);
+
+        if (isNaN(value)) {
+          console.error("r-gauger error: ranges[".concat(i, "].value is undefined or not an number"));
+        }
+
         return {
           color: color,
           angle: _this2.getAngleByValue(value)
@@ -118,9 +130,18 @@ var RGauger = /*#__PURE__*/function (_Component) {
             angle = _Ranges$i.angle;
         var startAngle = i === 0 ? this.getAngleByValue(this.props.start) : Ranges[i - 1].angle;
         var endAngle = angle;
+        var slice;
+
+        if (direction === 'clock') {
+          slice = [endAngle, startAngle];
+        } else {
+          slice = [startAngle, endAngle];
+        }
+
         circles.push({
+          type: 'Arc',
           r: radius,
-          slice: [startAngle, endAngle],
+          slice: slice,
           stroke: color,
           lineWidth: thickness
         });
@@ -140,13 +161,8 @@ var RGauger = /*#__PURE__*/function (_Component) {
       }
 
       return circles.map(function (c) {
-        var _c$radius = c.radius,
-            r = _c$radius === void 0 ? 20 : _c$radius,
-            _c$color = c.color,
-            stroke = _c$color === void 0 ? '#555' : _c$color,
-            _c$lineWidth = c.lineWidth,
-            lineWidth = _c$lineWidth === void 0 ? 1 : _c$lineWidth;
         return {
+          type: 'Arc',
           r: c.radius,
           lineWidth: c.lineWidth,
           stroke: c.stroke,
@@ -197,7 +213,9 @@ var RGauger = /*#__PURE__*/function (_Component) {
         labels.push({
           rotate: angle,
           pivot: [pivot, 0],
+          type: 'Group',
           items: [{
+            type: 'Text',
             text: edit ? edit(value) : value,
             fill: color,
             rotate: -angle,
@@ -253,6 +271,7 @@ var RGauger = /*#__PURE__*/function (_Component) {
         var pivot = offset ? -offset : -(radius - height - thickness / 2);
         var angle = this.getAngleByValue(value);
         scales.push({
+          type: 'Line',
           stroke: color,
           points: [[0, 0], [height, 0]],
           lineWidth: width,
@@ -313,7 +332,9 @@ var RGauger = /*#__PURE__*/function (_Component) {
 
       var angle = this.getAngleByValue(value);
       return {
+        type: 'Group',
         items: [{
+          type: 'Line',
           fill: color,
           points: [[0, -width / 2], [height, 0], [0, width / 2]],
           lineWidth: width,
@@ -321,6 +342,7 @@ var RGauger = /*#__PURE__*/function (_Component) {
           rotate: angle,
           close: true
         }, {
+          type: 'Arc',
           r: handleRadius,
           fill: color
         }]
@@ -355,16 +377,20 @@ var RGauger = /*#__PURE__*/function (_Component) {
           left = _Style$left === void 0 ? 0 : _Style$left,
           _Style$fontSize2 = Style.fontSize,
           fontSize = _Style$fontSize2 === void 0 ? 10 : _Style$fontSize2,
+          _Style$fontFamily = Style.fontFamily,
+          fontFamily = _Style$fontFamily === void 0 ? 'arial' : _Style$fontFamily,
           _Style$color2 = Style.color,
           color = _Style$color2 === void 0 ? '#000' : _Style$color2,
           _Style$rotate = Style.rotate,
           rotate = _Style$rotate === void 0 ? 0 : _Style$rotate;
       return {
+        type: 'Text',
         text: typeof value === 'function' ? value(this.props) : value,
         x: left,
-        y: top,
+        y: -top,
         rotate: rotate,
         fontSize: fontSize,
+        fontFamily: fontFamily,
         fill: color
       };
     }
@@ -388,7 +414,6 @@ var RGauger = /*#__PURE__*/function (_Component) {
       var _this$props7 = this.props,
           dynamic = _this$props7.dynamic,
           position = _this$props7.position,
-          direction = _this$props7.direction,
           id = _this$props7.id,
           className = _this$props7.className;
 
@@ -401,10 +426,7 @@ var RGauger = /*#__PURE__*/function (_Component) {
         id: id,
         items: this.getItems(),
         style: this.getStyle(),
-        axisPosition: position,
-        rotateSetting: {
-          direction: direction === 'clockwise' ? 'clockwise' : 'clock'
-        }
+        screenPosition: position
       });
     }
   }]);
@@ -423,6 +445,6 @@ RGauger.defaultProps = {
   label: {},
   scale: {},
   direction: 'clock',
-  position: ['50%', '50%'],
+  position: [0, 0],
   customShapes: []
 };

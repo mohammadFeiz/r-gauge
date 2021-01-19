@@ -8,25 +8,29 @@ export default class RGauger extends Component{
   }
   getPercentByValue(value,start,end){return 100 * (value - start) / (end - start)}
   getDetails(){
-    var {angle,start,end} = this.props;
-    this.startAngle = 270 - angle / 2;
+    var {angle,start,end,direction} = this.props;
     this.scales = this.getScales();
     this.labels = this.getLabels();
-    this.slice = [this.getAngleByValue(start),this.getAngleByValue(end)];
+    this.slice = direction === 'clock'?[this.getAngleByValue(end),this.getAngleByValue(start)]:[this.getAngleByValue(start),this.getAngleByValue(end)];
     this.circles = this.getCircles();
   }
   getAngleByValue(value){
-    var {start,end,angle,rotate,direction} = this.props;
+    var {direction,start,end,angle,rotate} = this.props;
     var percent = this.getPercentByValue(value,start,end);
-    return this.startAngle + angle / 100 * percent + rotate + (direction === 'clockwise'?180:0);
+    var valueAngle = angle / 100 * percent;
+    if(direction === 'clock'){
+      return 90 + angle / 2 - valueAngle + rotate;  
+    }
+    return 90 - angle / 2 + valueAngle + rotate;
   }
   
   getRanges(){
-    var {ranges = [],radius,thickness} = this.props;
+    var {direction,ranges = [],radius,thickness} = this.props;
     if(!thickness){return []}
-    var Ranges = (typeof ranges === 'function'?ranges(this.props):ranges).map((r)=>{ 
+    var Ranges = (typeof ranges === 'function'?ranges(this.props):ranges).map((r,i)=>{ 
       let {value,color} = r;
       value = parseFloat(value); 
+      if(isNaN(value)){console.error(`r-gauger error: ranges[${i}].value is undefined or not an number`)}
       return {color,angle:this.getAngleByValue(value)}
     })
     var circles = [];
@@ -34,7 +38,14 @@ export default class RGauger extends Component{
       var {color,angle} = Ranges[i];
       var startAngle = i === 0?this.getAngleByValue(this.props.start):Ranges[i - 1].angle;
       var endAngle = angle;
-      circles.push({r:radius,slice:[startAngle,endAngle],stroke:color,lineWidth:thickness})
+      var slice;
+      if(direction === 'clock'){
+        slice = [endAngle,startAngle]
+      }
+      else {
+        slice = [startAngle,endAngle]
+      }
+      circles.push({type:'Arc',r:radius,slice,stroke:color,lineWidth:thickness})
     }
     return circles;
   }
@@ -42,8 +53,7 @@ export default class RGauger extends Component{
     var {circles} = this.props;
     if(!circles || circles.length === 0){return []}
     return circles.map((c)=>{
-      let {radius:r=20,color:stroke = '#555',lineWidth = 1} = c;
-      return {r:c.radius,lineWidth:c.lineWidth,stroke:c.stroke,fill:c.fill,slice:c.slice?this.slice:undefined}
+      return {type:'Arc',r:c.radius,lineWidth:c.lineWidth,stroke:c.stroke,fill:c.fill,slice:c.slice?this.slice:undefined}
     });
 
   }
@@ -62,9 +72,9 @@ export default class RGauger extends Component{
       var pivot = offset?-offset:-(radius - thickness/2 - fontSize - 3);
       var angle = this.getAngleByValue(value);
       labels.push({
-        rotate:angle,pivot:[pivot,0],
+        rotate:angle,pivot:[pivot,0],type:'Group',
         items:[
-          {text:edit?edit(value):value,fill:color,rotate:-angle,fontSize}
+          {type:'Text',text:edit?edit(value):value,fill:color,rotate:-angle,fontSize}
         ]
         
       })
@@ -84,7 +94,7 @@ export default class RGauger extends Component{
       var {offset = 0,color = '#000',width,height = 5} = Style(value);
       var pivot = offset?-offset:-(radius - height - thickness / 2);
       var angle = this.getAngleByValue(value);
-      scales.push({stroke:color,points:[[0,0],[height,0]],lineWidth:width,pivot:[pivot,0],rotate:angle,})
+      scales.push({type:'Line',stroke:color,points:[[0,0],[height,0]],lineWidth:width,pivot:[pivot,0],rotate:angle,})
       value+=step;
     } 
     return scales;
@@ -101,9 +111,10 @@ export default class RGauger extends Component{
     var {offset = 0,color = '#000',width = 4,height = (radius - thickness/2),radius:handleRadius=4} = Style(value);
     var angle = this.getAngleByValue(value);
     return { 
+      type:'Group',
       items:[
-        {fill:color,points:[[0,-width / 2],[height,0],[0,width / 2]],lineWidth:width,pivot:[-offset,0],rotate:angle,close:true},
-        {r:handleRadius,fill:color}
+        {type:'Line',fill:color,points:[[0,-width / 2],[height,0],[0,width / 2]],lineWidth:width,pivot:[-offset,0],rotate:angle,close:true},
+        {type:'Arc',r:handleRadius,fill:color}
       ] 
     }
   }
@@ -116,9 +127,9 @@ export default class RGauger extends Component{
   getText(text){
     var {value,style = {}} = text;
     var Style = typeof style === 'function'?style(this.props):style;
-    var {top = 20,left = 0,fontSize = 10,color = '#000',rotate = 0} = Style;
+    var {top = 20,left = 0,fontSize = 10,fontFamily = 'arial',color = '#000',rotate = 0} = Style;
     return {
-      text:typeof value === 'function'?value(this.props):value,x:left,y:top,rotate,fontSize,fill:color
+      type:'Text',text:typeof value === 'function'?value(this.props):value,x:left,y:-top,rotate,fontSize,fontFamily,fill:color
     }
   }
   getItems(){return this.props.customShapes.concat(this.circles,this.getRanges(),this.labels,this.scales,this.getTexts(),this.getHandles())} 
@@ -129,11 +140,11 @@ export default class RGauger extends Component{
     return Style;
   }
   render(){
-    var {dynamic,position,direction,id,className} = this.props;
+    var {dynamic,position,id,className} = this.props;
     if(dynamic){this.getDetails();}
     return (
-      <RCanvas className={`r-gauger${className?' ' + className:''}`} id={id} items={this.getItems()} style={this.getStyle()} axisPosition={position} rotateSetting={{direction:direction === 'clockwise'?'clockwise':'clock'}}/>
+      <RCanvas className={`r-gauger${className?' ' + className:''}`} id={id} items={this.getItems()} style={this.getStyle()} screenPosition={position}/>
     )
   }
 }
-RGauger.defaultProps = {angle:180,rotate:0,start:0,end:100,thickness:10,radius:70,label:{},scale:{},direction:'clock',position:['50%','50%'],customShapes:[]}
+RGauger.defaultProps = {angle:180,rotate:0,start:0,end:100,thickness:10,radius:70,label:{},scale:{},direction:'clock',position:[0,0],customShapes:[]}
